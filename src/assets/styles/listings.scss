@@ -1,0 +1,50 @@
+.listings {
+	tbody tr {
+		@include transition($btn-transition);
+	}
+	  
+	tbody tr:hover {
+		background: #FFF;
+		cursor: pointer;
+	}
+
+	.name {
+		float: left;
+		padding-left: 10px;
+		margin-top: 2px;
+	}
+
+	.icon {
+		float: left;
+		width: 32px;
+		margin-top: 2px;
+	}
+	
+	.favorite {
+		float: right;
+		font-size: 22px;
+		margin-top: 3px;
+	}
+	
+	.price {
+		font-size: 1rem;
+		font-weight: 100;
+		padding: 8px 22px;
+	}
+}
+
+.opened {
+	.listings {
+		.name {
+			padding-left: 6px;
+		}
+		
+		.icon {
+			width: 18px;
+		}
+
+		.favorite {
+			display: none;
+		}
+	}
+}

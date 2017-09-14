@@ -52,15 +52,6 @@
   }
 }
 
-.coins tbody tr {
-  @include transition($btn-transition);
-}
-
-.coins tbody tr:hover {
-  background: #FFF;
-  cursor: pointer;
-}
-
 
 // Bordered version
 //

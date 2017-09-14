@@ -1,0 +1,12 @@
+.content {
+    display: none;
+}
+
+.opened {
+	.content {
+		height: 100%;
+		overflow: auto;
+		background: #FFF;
+		display: block;
+	}
+}

@@ -1,0 +1,64 @@
+.header {
+	border-bottom: 1px solid #DDD;
+	position: relative;
+	height: 65px;
+
+	.btn {
+		border-radius: 0 !important;
+	}
+	
+	.logo {
+		position: absolute;
+		width: 100px;
+		height: 65px;
+		left: 0;
+		top: 0;
+		background: $green;
+	}
+
+    .search {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		padding-left: 100px;
+		padding-right: 75px;
+
+        .form-control {
+            background: transparent;
+            border: none;
+            padding: $px20 $px24;
+            padding-right: 0;
+        }
+
+        .btn {
+            border: none;
+			padding: $px20 $px24 !important;
+        }
+    }
+
+    .nav {
+		position: absolute;
+		width: 80px;
+		right: 0;
+		top: 0;
+
+        .dropdown button {
+            border: none;
+			padding: $px20 $px24 !important;
+        }
+	}
+
+	@include media-breakpoint-down(sm) {
+		
+	}
+}
+
+.opened {
+    .header {
+        .search {
+            width: 100%;
+        }
+    }
+}
