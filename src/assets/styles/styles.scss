@@ -1,14 +1,14 @@
 @import "bootstrap/bootstrap";
 
-.header {
-    border-bottom: 1px solid #DDD;
-}
+@import "header";
+@import "listings";
+@import "content";
 
 .opened {
     height: 100%;
 }
 
-.opened .listings {
+.opened .main {
     float: left;
     width: 100%;
     max-width: 380px;
@@ -16,47 +16,10 @@
     overflow: auto;
 }
 
-.opened .content {
-    height: 100%;
-    overflow: auto;
-    background: #FFF;
-}
-
 .opened .open-hide {
     display: none !important;
 }
 
-.icon {
-    float: left;
-    width: 32px;
-    margin-top: 2px;
-}
-
-.name {
-    float: left;
-    padding-left: 10px;
-    margin-top: 2px;
-}
-
-.favorite {
-    float: right;
-    font-size: 22px;
-    margin-top: 3px;
-}
-
-.price {
-    font-size: 1rem;
-    font-weight: 100;
-    padding: 8px 22px;
-}
-
-.search .form-control {
-    background: transparent;
-    border: none;
-    padding: $px20 $px24;
-}
-
-.search .btn {
-    border: none;
-    padding: $px20 $px24 !important;
+.opened .table th:first-child, .opened .table td:first-child {
+    padding-left: 0.75rem;
 }
