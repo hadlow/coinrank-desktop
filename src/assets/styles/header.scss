@@ -1,3 +1,6 @@
+$logo-width: 80px;
+$nav-width: 62px;
+
 .header {
 	border-bottom: 1px solid #DDD;
 	position: relative;
@@ -5,15 +8,17 @@
 
 	.btn {
 		border-radius: 0 !important;
+		box-shadow: none;
 	}
 	
 	.logo {
 		position: absolute;
-		width: 100px;
+		width: $logo-width;
 		height: 65px;
 		left: 0;
 		top: 0;
 		background: $green;
+		color: #FFF;
 	}
 
     .search {
@@ -22,8 +27,8 @@
 		left: 0;
 		right: 0;
 		width: 100%;
-		padding-left: 100px;
-		padding-right: 75px;
+		padding-left: $logo-width;
+		padding-right: $nav-width;
 
         .form-control {
             background: transparent;
@@ -40,18 +45,15 @@
 
     .nav {
 		position: absolute;
-		width: 80px;
+		width: $nav-width;
 		right: 0;
 		top: 0;
 
-        .dropdown button {
+        button.btn {
             border: none;
 			padding: $px20 $px24 !important;
-        }
-	}
-
-	@include media-breakpoint-down(sm) {
-		
+			border-left: 1px solid #ddd;
+		}
 	}
 }
 

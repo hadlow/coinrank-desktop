@@ -46,5 +46,37 @@
 		.favorite {
 			display: none;
 		}
+
+		.table th:first-child, .table td:first-child {
+			padding-left: 0.75rem;
+		}
+
+		.change span {
+			display: none;
+		}
+	}
+}
+
+@include media-breakpoint-down(sm) {
+	.listings {
+		.name {
+			padding-left: 6px;
+		}
+		
+		.icon {
+			width: 18px;
+		}
+
+		.favorite {
+			display: none;
+		}
+
+		.table th:first-child, .table td:first-child {
+			padding-left: 0.75rem;
+		}
+
+		.change span {
+			display: none;
+		}
 	}
 }
