@@ -481,3 +481,11 @@ template {
 [hidden] {
   display: none !important;
 }
+
+::selection {
+  background: #B5D6FC;
+}
+
+::-moz-selection {
+  background: #B5D6FC;
+}

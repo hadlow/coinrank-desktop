@@ -10,7 +10,7 @@
 						
 						<div class="search">
 							<div class="input-group input-group-lg">
-								<input type="text" class="form-control" placeholder="Search" />
+								<input type="text" class="form-control" placeholder="Search {{ global.total_market_cap_usd }}" autofocus />
 								
 								<span class="input-group-btn">
 									<button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
@@ -36,29 +36,31 @@
 								<th class="d-none d-xl-table-cell open-hide">Market Share</th>
 								<th class="d-none d-sm-table-cell open-hide">Chart</th>
 							</tr>
-						</thead>
+						</thead><!--<nvd3 [options]="options" [data]="data"></nvd3>-->
 						
 						<tbody>
-							<tr>
+							<tr *ngFor="let listing of listings">
 								<td>
 									<div class="icon">
-										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/bitcoin.png" class="img-fluid" />
+										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
+
+										<div class="badge badge-primary">{{ listing.getRank() }}</div>
 									</div>
 
 									<div class="name">
-										<h4 class="mb-0">Bitcoin</h4>
-										<h6 class="mb-0 font-weight-light">16,641,782 BTC</h6>
+										<h4 class="mb-0">{{ listing.getName() }}</h4>
+										<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
 									</div>
 
 									<div class="favorite">
 										<i class="fa fa-star-o"></i>
 									</div>
 								</td>
-								<td class="text-center change"><p class="mt-0 mb-0 text-success"><i class="fa fa-arrow-up"></i></p><p class="mt-0 mb-0 text-success">4.6%<span>(+26.38)</span></p></td>
-								<td class="text-center"><span class="badge badge-success price">$5,253.48</span></td>
-								<td class="text-right d-none d-md-table-cell open-hide">Lots</td>
-								<td class="text-right d-none d-lg-table-cell open-hide">$1.957M</td>
-								<td class="text-center d-none d-xl-table-cell open-hide">48.4%</td>
+								<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> (+26.38)</span></p></td>
+								<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
+								<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
+								<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+								<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
 								<td class="d-none d-sm-table-cell open-hide">Chart</td>
 							</tr>
 						</tbody>
