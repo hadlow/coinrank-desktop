@@ -17,6 +17,8 @@ export class AppComponent
 {
 	private listings: Listing[] = [];
 
+	private shown_listings: Listing[] = [];
+
 	private global: any;
 
 	private opened: boolean = false;
@@ -67,6 +69,7 @@ export class AppComponent
 		this.global = this.globalService.getGlobal().subscribe(
 			(response: Response) => {
 				this.listings = this.listingsService.getListings(response.json());
+				this.shown_listings = this.listings;
 
 				const data = response.json();
 				this.global = data;
@@ -94,7 +97,7 @@ export class AppComponent
 			return 0;
 		});
 
-		this.listings.sort((l1, l2) => {
+		this.shown_listings.sort((l1, l2) => {
 			if(l1.getValue(this.sort) > l2.getValue(this.sort))
 				return 1;
 		
@@ -117,7 +120,7 @@ export class AppComponent
 			return 0;
 		});
 
-		this.listings.sort((l1, l2) => {
+		this.shown_listings.sort((l1, l2) => {
 			if(l1.getValue(this.sort) < l2.getValue(this.sort))
 				return 1;
 		
@@ -148,6 +151,18 @@ export class AppComponent
 			new_direction = 'down';
 
 		this.sort_direction = new_direction;
+	}
+
+	onSearch(search: string)
+	{
+		search = search.toLowerCase();
+		this.shown_listings = [];
+
+		for(let listing of this.listings)
+		{
+			if(listing.getName().toLowerCase().includes(search))
+				this.shown_listings.push(listing);
+		}
 	}
 
 	onSortClick(sort)
