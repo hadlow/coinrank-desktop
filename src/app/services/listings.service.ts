@@ -15,7 +15,7 @@ export class ListingsService
 
 	loadFromServer(global)
 	{
-		this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=30').subscribe(
+		this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=100').subscribe(
 			(response: Response) => {
 				const data = response.json();
 

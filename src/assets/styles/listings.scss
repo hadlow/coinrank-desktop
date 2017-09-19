@@ -1,12 +1,41 @@
 .listings {
 	tbody tr {
+		cursor: pointer;
 		@include transition($btn-transition);
 		@include no-select();
 	}
+
+	thead tr {
+		@include no-select();
+		
+		th {
+			cursor: default;
+
+			span {
+				cursor: pointer;
+
+				&.sort {
+					font-weight: bold;
+					color: $gray-900;
+
+					&.up::after {
+						content: "\f0d8";
+						font: normal normal normal 14px/1 FontAwesome;
+						margin-left: 5px;
+					}
+
+					&.down::after {
+						content: "\f0d7";
+						font: normal normal normal 14px/1 FontAwesome;
+						margin-left: 5px;
+					}
+				}
+			}
+		}
+	}
 	  
-	tbody tr:hover {
+	tbody tr:hover, tbody tr.active {
 		background: #FFF;
-		cursor: pointer;
 	}
 
 	.name {
@@ -27,12 +56,32 @@
 		bottom: -5px;
 		right: -5px;
 		font-size: 11px;
+		padding-top: 2px;
+	}
+
+	tr.highlighted {
+		background: $gray-200;
 	}
 	
 	.favorite {
 		float: right;
 		font-size: 22px;
 		margin-top: 3px;
+
+		&::after {
+			content: "\f006";
+			font: normal normal normal 22px/1 FontAwesome;
+		}
+
+		&:hover::after {
+			content: "\f005";
+			font: normal normal normal 22px/1 FontAwesome;
+		}
+
+		&.active::after {
+			content: "\f005";
+			font: normal normal normal 22px/1 FontAwesome;
+		}
 	}
 	
 	.price {

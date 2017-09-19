@@ -55,57 +55,90 @@ export class Listing extends Serializable
 
 	public getRank()
 	{
-		return this.rank;
+		return Number(this.rank);
 	}
 
 	public getPriceUsd()
 	{
-		return this.price_usd;
+		return Number(this.price_usd);
 	}
 
 	public getPriceBtc()
 	{
-		return this.price_btc;
+		return Number(this.price_btc);
 	}
 
 	public getVolumUsd()
 	{
-		return this.volume_usd;
+		return Number(this.volume_usd);
 	}
 
 	public getMarketCapUsd()
 	{
-		return this.market_cap_usd;
+		return Number(this.market_cap_usd);
 	}
 
 	public getAvailableSupply()
 	{
-		return this.available_supply;
+		return Number(this.available_supply);
 	}
 
 	public getTotalSupply()
 	{
-		return this.total_supply;
+		return Number(this.total_supply);
 	}
 
 	public getPercentChange1H()
 	{
-		return this.percent_change_1h;
+		return Number(this.percent_change_1h);
 	}
 
 	public getPercentChange24H()
 	{
-		return this.percent_change_24h;
+		return Number(this.percent_change_24h);
 	}
 
 	public getPercentChange7D()
 	{
-		return this.percent_change_7d;
+		return Number(this.percent_change_7d);
+	}
+
+	public getPriceChange1H()
+	{
+		return (Number(this.percent_change_1h) / 100) * Number(this.price_usd);
+	}
+
+	public getPriceChange24H()
+	{
+		return (Number(this.percent_change_24h) / 100) * Number(this.price_usd);
+	}
+
+	public getPriceChange7D()
+	{
+		return (Number(this.percent_change_7d) / 100) * Number(this.price_usd);
 	}
 
 	public getLastUpdated()
 	{
 		return this.last_updated;
+	}
+
+	public getValue(type)
+	{
+		switch(type)
+		{
+			case '24h_change':
+				return this.getPercentChange24H();
+
+			case 'price':
+				return this.getPriceBtc();
+
+			case 'market_cap':
+				return this.getMarketCapUsd();
+
+			case '24h_volume':
+				return this.getVolumUsd();
+		}
 	}
 
 	public getColor()

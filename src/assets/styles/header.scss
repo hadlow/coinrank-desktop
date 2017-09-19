@@ -19,6 +19,12 @@ $nav-width: 63px;
 		top: 0;
 		background: $green;
 		color: #FFF;
+		padding: 20px;
+		text-align: center;
+
+		img {
+			height: 25px;
+		}
 	}
 
     .search {
