@@ -7,18 +7,30 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>CoinRank</title>
+	<title>Coinrank</title>
 
-	<link rel="icon" type="image/x-icon" href="favicon.ico">
-	<link rel="apple-touch-icon" href="./img/icons/32.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="./img/icons/72.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="./img/icons/114.png">
+	<link rel="icon" type="image/x-icon" href="assets/images/icons/16.png">
+	<link rel="apple-touch-icon" href="assets/images/icons/32.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="assets/images/icons/72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="assets/images/icons/114.png">
 
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+
+	<style>
+		.loading {
+			position: fixed;
+			width: 71px;
+			height: 45px;
+			top: 50%;
+			left: 50%;
+			margin-top: -22.5px;
+			margin-left: -35.5px;
+		}
+	</style>
 </head>
 
 <body>
-	<app-root>Loading. . .</app-root>
+	<app-root><div class="loading"><img src="/assets/images/loading-logo.png" /></div></app-root>
 </body>
 </html>

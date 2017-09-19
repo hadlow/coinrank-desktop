@@ -1,12 +1,61 @@
 .content {
-    display: none;
+	display: none;
+	
+	.options {
+		height: 65px;
+		padding: 20px 0;
+
+		.back {
+			border-radius: 50px;
+			padding: 2px;
+			float: right;
+			width: 28px;
+			height: 28px;
+			text-align: center;
+			cursor: pointer;
+			@include transition($btn-transition);
+		}
+
+		.back:hover {
+			background: $gray-200;
+		}
+	}
+
+	.chart {
+		width: 100%;
+		height: 500px;
+	}
 }
 
 .opened {
+	.main {
+		float: left;
+		width: 100%;
+		max-width: 450px;
+		height: 100%;
+		overflow: auto;
+	}
+
 	.content {
 		height: 100%;
 		overflow: auto;
 		background: #FFF;
 		display: block;
+	}
+}
+
+// If screen too small for sidebars
+@include media-breakpoint-down(md) {
+	.opened {
+		.main{ 
+			width: 100%;
+			max-width: 100%;
+		}
+
+		.content {
+			width: 100%;
+			position: absolute;
+			margin-top: 65px;
+		}
 	}
 }

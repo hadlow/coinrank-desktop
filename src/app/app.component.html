@@ -1,25 +1,46 @@
-<div class="opene">
+<div [ngClass]="{'opened': opened}">
 	<div class="main">
 		<div class="row no-gutters">
 			<div class="col-sm-12">
 				<div class="header">
-					<div class="row no-gutters">
-						<div class="logo">
-							Logo
+					<div class="logo">
+						<img src="/assets/images/header-logo.png" />
+					</div>
+					
+					<div class="search">
+						<div class="input-group input-group-lg">
+							<input type="text" class="form-control" placeholder="Search" autofocus />
+							
+							<span class="input-group-btn">
+								<button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
+							</span>
 						</div>
-						
-						<div class="search">
-							<div class="input-group input-group-lg">
-								<input type="text" class="form-control" placeholder="Search {{ global.total_market_cap_usd }}" autofocus />
-								
-								<span class="input-group-btn">
-									<button class="btn btn-light" type="button"><i class="fa fa-search"></i></button>
-								</span>
-							</div>
-						</div>
+					</div>
 
-						<div class="nav">
-							<button class="btn btn-light btn-lg" type="button"><i class="fa fa-cog"></i></button>
+					<div class="nav">
+						<button class="btn btn-light btn-lg" type="button" data-toggle="modal" data-target="#settings"><i class="fa fa-cog"></i></button>
+					</div>
+				</div>
+
+				<div class="subheading">
+					<div class="container-fluid">
+						<div class="row pt-3 pb-4">
+							<div class="col-sm-6">
+								<div class="btn-group btn-group-sm" data-toggle="buttons">
+									<label class="btn btn-primary active">
+										<input type="checkbox" autocomplete="off" checked>Currencies
+									</label>
+
+									<label class="btn btn-primary active">
+										<input type="checkbox" autocomplete="off" checked>Assets
+									</label>
+								</div>
+							</div>
+
+							<div class="col-sm-6 text-right pt-1 pb-1">
+								<span class="small uppercase">Total Market Cap: {{ global.total_market_cap_usd | currency:'USD':true:'1.0-0' }}</span>
+								<span class="small uppercase ml-1">Total 24H Volume: {{ global.total_24h_volume_usd | currency:'USD':true:'1.0-0' }}</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -29,17 +50,17 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th>24H Change</th>
-								<th>Price</th>
-								<th class="d-none d-md-table-cell open-hide">Market Cap</th>
-								<th class="d-none d-lg-table-cell open-hide">24H Volume</th>
+								<th><span [ngClass]="sort == '24h_change' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_change')">24H Change</span></th>
+								<th><span [ngClass]="sort == 'price' ? 'sort ' + sort_direction : ''" (click)="onSortClick('price')">Price</span></th>
+								<th class="d-none d-md-table-cell open-hide"><span [ngClass]="sort == 'market_cap' ? 'sort ' + sort_direction : ''" (click)="onSortClick('market_cap')">Market Cap</span></th>
+								<th class="d-none d-lg-table-cell open-hide"><span [ngClass]="sort == '24h_volume' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_volume')">24H Volume</span></th>
 								<th class="d-none d-xl-table-cell open-hide">Market Share</th>
 								<th class="d-none d-sm-table-cell open-hide">Chart</th>
 							</tr>
-						</thead><!--<nvd3 [options]="options" [data]="data"></nvd3>-->
+						</thead>
 						
 						<tbody>
-							<tr *ngFor="let listing of listings">
+							<tr *ngFor="let listing of favorites" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
 								<td>
 									<div class="icon">
 										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
@@ -52,16 +73,37 @@
 										<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
 									</div>
 
-									<div class="favorite">
-										<i class="fa fa-star-o"></i>
-									</div>
+									<div class="favorite active" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
 								</td>
-								<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> (+26.38)</span></p></td>
+								<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
 								<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
 								<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 								<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 								<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-								<td class="d-none d-sm-table-cell open-hide">Chart</td>
+								<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
+							</tr>
+							
+							<tr *ngFor="let listing of listings | slice:0:30; let i=index" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
+								<td>
+									<div class="icon">
+										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
+
+										<div class="badge badge-primary">{{ listing.getRank() }}</div>
+									</div>
+
+									<div class="name">
+										<h4 class="mb-0">{{ listing.getName() }}</h4>
+										<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
+									</div>
+
+									<div class="favorite" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
+								</td>
+								<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
+								<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
+								<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
+								<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+								<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+								<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
 							</tr>
 						</tbody>
 					</table>
@@ -72,7 +114,54 @@
 
 	<div class="content">
 		<div class="container-fluid">
-			<h1>Bitcoin</h1>
+			<div class="options">
+				<div class="row">
+					<div class="col-sm-6">
+						
+					</div>
+
+					<div class="col-sm-6">
+						<div class="back" (click)="onBackClick()"><i class="fa fa-times"></i></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="heading">
+				<div class="row no-gutters">
+					<div class="col-sm-8">
+						<h2 class="mt-0 mb-0">{{ viewing?.getName() }} <a href="http://bitcoin.org" target="_blank"><small><i class="fa fa-external-link"></i></small></a></h2>
+						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
+						<p class="mt-0 mb-0 text-uppercase small"><span class="mr-4">Volume (24h): {{ viewing?.getVolumUsd() | currency:'USD':true:'1.0-0' }}</span><span class="mr-4">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</span>Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }}</p>
+					</div>
+
+					<div class="col-sm-4 text-right">
+						<h1 class="mt-0 mb-0">{{ viewing?.getPriceUsd() | currency:'USD':true:'1.2-5' }}</h1>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor() }}">{{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p>
+					</div>
+				</div>
+			</div>
+
+			<div class="chart">
+				<ngx-charts-line-chart
+				[view]="view"
+				class="chart-container"
+				[scheme]="colorScheme"
+				schemeType="ordinal"
+				[results]="data"
+				legend="false"
+				gradient="false"
+				xAxis="true"
+				yAxis="false"
+				showXAxisLabel="false"
+				showYAxisLabel="false"
+				autoScale="true"
+				timeline="true"
+				showGridLines="false"
+				[curve]="curve">
+				</ngx-charts-line-chart>
+			</div>
 		</div>
 	</div>
 </div>
+
+<app-settings></app-settings>
