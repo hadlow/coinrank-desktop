@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GlobalService } from './services/global.service';
 import { ListingsService } from './services/listings.service';
 import { SettingsService } from './services/settings.service';
+import { DetailService } from './services/detail.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -30,7 +31,8 @@ import { SettingsComponent } from './settings/settings.component';
 		Title,
 		GlobalService,
 		ListingsService,
-		SettingsService
+		SettingsService,
+		DetailService
 	],
 	bootstrap: [AppComponent]
 })

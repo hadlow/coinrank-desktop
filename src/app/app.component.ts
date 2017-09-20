@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { Listing } from "./models/listing.model";
 import { ListingsService } from "./services/listings.service";
 import { GlobalService } from "./services/global.service";
+import { DetailService } from "./services/detail.service";
 
 @Component({
 	selector: 'app-root',
@@ -33,8 +34,6 @@ export class AppComponent
 
 	private limit = 30;
 
-	view = [0, 500];
-
 	curveType: string = 'Linear';
 	curve = d3.curveLinear;
 
@@ -42,31 +41,9 @@ export class AppComponent
 	schemeType: string = 'ordinal';
 	selectedColorScheme: string;
 
-	private data = [
-		{
-		  "name": "Germany",
-		  "series": [
-			{
-			  "name": "2010",
-			  "value": 7300000
-			},
-			{
-			  "name": "2011",
-			  "value": 8940000
-			},
-			{
-			  "name": "2012",
-			  "value": 9340000
-			},
-			{
-			  "name": "2013",
-			  "value": 9820000
-			}
-		  ]
-		}
-	  ];
+	private data = [];
 
-	constructor(private globalService: GlobalService, private listingsService: ListingsService, private titleService: Title)
+	constructor(private globalService: GlobalService, private listingsService: ListingsService, private detailService: DetailService, private titleService: Title)
 	{
 		this.global = this.globalService.getGlobal().subscribe(
 			(response: Response) => {
@@ -163,7 +140,7 @@ export class AppComponent
 	onListingClick(listing: Listing)
 	{
 		this.opened = true;
-		this.viewing = listing;
+		this.viewing = this.detailService.getDetail(listing);
 	}
 
 	onFavoriteClick(listing: Listing)
