@@ -83,7 +83,7 @@
 								<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
 							</tr>
 							
-							<tr *ngFor="let listing of shown_listings | slice:0:30; let i=index" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
+							<tr *ngFor="let listing of shown_listings | slice:0:limit; let i=index" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
 								<td>
 									<div class="icon">
 										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
@@ -107,6 +107,16 @@
 							</tr>
 						</tbody>
 					</table>
+
+					<div class="text-center pb-5"><button class="btn btn-primary" (click)="limit = limit + 30">Load more</button></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<p>&copy; Coinrank 2017</p>
 				</div>
 			</div>
 		</div>
