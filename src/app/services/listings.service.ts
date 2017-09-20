@@ -30,6 +30,17 @@ export class ListingsService
 		);
 	}
 
+	getListing(id)
+	{
+		for(let listing of this.listings)
+		{
+			if(listing.getId() == id)
+				return listing;
+		}
+
+		return null;
+	}
+
 	getListings(global)
 	{
 		// If storage is empty

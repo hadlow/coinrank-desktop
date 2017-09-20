@@ -26,13 +26,13 @@
 					<div class="container-fluid">
 						<div class="row pt-3 pb-4">
 							<div class="col-sm-6">
-								<div class="btn-group btn-group-sm" data-toggle="buttons">
+								<div class="d-none btn-group btn-group-sm" data-toggle="buttons">
 									<label class="btn btn-primary active">
-										<input type="checkbox" autocomplete="off" checked>Currencies
+										<input type="checkbox" autocomplete="off" checked>Currencies <span class="badge badge-secondary">{{ global.active_currencies }}</span>
 									</label>
 
 									<label class="btn btn-primary active">
-										<input type="checkbox" autocomplete="off" checked>Assets
+										<input type="checkbox" autocomplete="off" checked>Assets <span class="badge badge-secondary">{{ global.active_assets }}</span>
 									</label>
 								</div>
 							</div>
@@ -60,51 +60,55 @@
 						</thead>
 						
 						<tbody>
-							<tr *ngFor="let listing of favorites" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
-								<td>
-									<div class="icon">
-										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
+							<ng-container *ngFor="let listing of shown_listings">
+								<tr *ngIf="favorites.indexOf(listing.getId()) > -1" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
+									<td>
+										<div class="icon">
+											<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
 
-										<div class="badge badge-primary">{{ listing.getRank() }}</div>
-									</div>
+											<div class="badge badge-primary">{{ listing.getRank() }}</div>
+										</div>
 
-									<div class="name">
-										<h4 class="mb-0">{{ listing.getName() }}</h4>
-										<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
-									</div>
+										<div class="name">
+											<h4 class="mb-0">{{ listing.getName() }}</h4>
+											<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
+										</div>
 
-									<div class="favorite active" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
-								</td>
-								<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
-								<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
-								<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
-								<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
-								<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-								<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
-							</tr>
+										<div class="favorite active" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
+									</td>
+									<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+									<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
+								</tr>
+							</ng-container>
 							
-							<tr *ngFor="let listing of shown_listings | slice:0:limit; let i=index" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
-								<td>
-									<div class="icon">
-										<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
+							<ng-container *ngFor="let listing of shown_listings | slice:0:limit; let i=index">
+								<tr *ngIf="favorites.indexOf(listing.getId()) < 0" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
+									<td>
+										<div class="icon">
+											<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
 
-										<div class="badge badge-primary">{{ listing.getRank() }}</div>
-									</div>
+											<div class="badge badge-primary">{{ listing.getRank() }}</div>
+										</div>
 
-									<div class="name">
-										<h4 class="mb-0">{{ listing.getName() }}</h4>
-										<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
-									</div>
+										<div class="name">
+											<h4 class="mb-0">{{ listing.getName() }}</h4>
+											<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
+										</div>
 
-									<div class="favorite" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
-								</td>
-								<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
-								<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
-								<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
-								<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
-								<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-								<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
-							</tr>
+										<div class="favorite" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
+									</td>
+									<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+									<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
+								</tr>
+							</ng-container>
 						</tbody>
 					</table>
 

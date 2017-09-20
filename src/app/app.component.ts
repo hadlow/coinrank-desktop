@@ -19,13 +19,13 @@ export class AppComponent
 
 	private shown_listings: Listing[] = [];
 
+	private favorites: string[] = [];
+
 	private global: any;
 
 	private opened: boolean = false;
 
 	private viewing: Listing;
-
-	private favorites: Listing[] = [];
 
 	private sort = 'market_cap';
 
@@ -78,6 +78,12 @@ export class AppComponent
 			}
 		);
 
+		if(localStorage.getItem('favorites') != null)
+			this.favorites = JSON.parse(localStorage.getItem('favorites'));
+		else
+			this.favorites = [];
+		
+
 		this.setColorScheme('cool');
 	}
 
@@ -89,16 +95,6 @@ export class AppComponent
 
 	sortListingsUp()
 	{
-		this.favorites.sort((l1, l2) => {
-			if(l1.getValue(this.sort) > l2.getValue(this.sort))
-				return 1;
-		
-			if(l1.getValue(this.sort) < l2.getValue(this.sort))
-				return -1;
-		
-			return 0;
-		});
-
 		this.shown_listings.sort((l1, l2) => {
 			if(l1.getValue(this.sort) > l2.getValue(this.sort))
 				return 1;
@@ -112,16 +108,6 @@ export class AppComponent
 
 	sortListingsDown()
 	{
-		this.favorites.sort((l1, l2) => {
-			if(l1.getValue(this.sort) < l2.getValue(this.sort))
-				return 1;
-		
-			if(l1.getValue(this.sort) > l2.getValue(this.sort))
-				return -1;
-		
-			return 0;
-		});
-
 		this.shown_listings.sort((l1, l2) => {
 			if(l1.getValue(this.sort) < l2.getValue(this.sort))
 				return 1;
@@ -182,7 +168,15 @@ export class AppComponent
 
 	onFavoriteClick(listing: Listing)
 	{
-		this.favorites.push(listing);
+		if(this.favorites.indexOf(listing.getId()) > -1)
+		{
+			var index = this.favorites.indexOf(listing.getId());
+			this.favorites.splice(index, 1);
+		} else {
+			this.favorites.push(listing.getId());
+		}
+
+		localStorage.setItem('favorites', JSON.stringify(this.favorites));
 
 		this.sortListings();
 	}
