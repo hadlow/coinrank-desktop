@@ -31,6 +31,8 @@ export class AppComponent
 
 	private sort_direction = 'down';
 
+	private limit = 30;
+
 	view = [0, 500];
 
 	curveType: string = 'Linear';
