@@ -16,8 +16,32 @@
     background: #25272b;
     color: $gray-200;
 
+    a {
+        color: $light;
+
+        &:hover {
+            color: $white;
+        }
+    }
+
+    .form-control {
+        color: $gray-200;
+    }
+
+    .btn-light {
+        @include button-variant($dark, $dark);
+    }
+
+    .btn-dark {
+        @include button-variant($light, $light);
+    }
+
     .header {
         border-bottom: 1px solid #000;
+
+        .nav button.btn {
+            border-left: 1px solid #000;
+        }
     }
 
     .listings {
@@ -26,11 +50,11 @@
         }
 
         tbody tr:hover, tbody tr.active {
-            background: #4b505a;
+            background: #0f1113;
         }
 
         tr.highlighted {
-            background: #101215;
+            background: #31353c;
         }
         
         table thead th {
@@ -39,6 +63,14 @@
             .sort {
                 color: #FFF;
             }
+        }
+    }
+
+    .content {
+        background: #0f1113;
+
+        .options .back:hover {
+            background: $dark;
         }
     }
 }
