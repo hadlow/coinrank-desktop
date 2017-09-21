@@ -25,6 +25,7 @@ export class DetailService
 			this.loadFromServer();
 		
 		// Then return the listing
-		return this.listing;
+		//return this.listing;
+		return listing;
 	}
 }
