@@ -11,3 +11,34 @@
 .opened .open-hide {
     display: none !important;
 }
+
+.dark {
+    background: #25272b;
+    color: $gray-200;
+
+    .header {
+        border-bottom: 1px solid #000;
+    }
+
+    .listings {
+        tr {
+            background: #25272b;
+        }
+
+        tbody tr:hover, tbody tr.active {
+            background: #4b505a;
+        }
+
+        tr.highlighted {
+            background: #101215;
+        }
+        
+        table thead th {
+            color: $gray-200;
+
+            .sort {
+                color: #FFF;
+            }
+        }
+    }
+}

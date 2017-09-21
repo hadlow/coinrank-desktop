@@ -1,4 +1,4 @@
-<div [ngClass]="{'opened': opened}">
+<div [ngClass]="{'opened': opened, 'dark': settings[2] == 'dark'}">
 	<div class="main">
 		<div class="row no-gutters">
 			<div class="col-sm-12">
@@ -143,20 +143,21 @@
 			<div class="heading">
 				<div class="row no-gutters">
 					<div class="col-sm-8">
-						<h2 class="mt-0 mb-0">{{ viewing?.getName() }} <a href="http://bitcoin.org" target="_blank"><small><i class="fa fa-external-link"></i></small></a></h2>
+						<h2 class="mt-0 mb-0">{{ viewing?.getName() }} <a href="http://bitcoin.org" target="_blank" data-toggle="tooltip" data-placement="top" title="http://bitcoin.org"><small><i class="fa fa-external-link"></i></small></a></h2>
 						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
-						<p class="mt-0 mb-0 text-uppercase small"><span class="mr-4">Volume (24h): {{ viewing?.getVolumUsd() | currency:'USD':true:'1.0-0' }}</span><span class="mr-4">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</span>Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }}</p>
+						<p class="mt-0 mb-0 text-uppercase small"><span class="mr-4"></span><span class="mr-4">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</span>Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }}</p>
 					</div>
 
 					<div class="col-sm-4 text-right">
 						<h1 class="mt-0 mb-0">{{ viewing?.getPriceUsd() | currency:'USD':true:'1.2-5' }}</h1>
 						<p class="mt-0 mb-0 text-{{ viewing?.getColor() }}">{{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-uppercase small">Volume (24h): {{ viewing?.getVolumUsd() | currency:'USD':true:'1.0-0' }}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="chart">
-				<ngx-charts-line-chart
+				<!--<ngx-charts-line-chart
 				class="chart-container"
 				[scheme]="colorScheme"
 				schemeType="ordinal"
@@ -171,8 +172,10 @@
 				timeline="true"
 				showGridLines="false"
 				[curve]="curve">
-				</ngx-charts-line-chart>
+				</ngx-charts-line-chart>-->
 			</div>
+
+
 		</div>
 	</div>
 </div>

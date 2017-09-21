@@ -3,10 +3,13 @@ import { Title } from '@angular/platform-browser';
 import { colorSets as ngxChartsColorsets } from '@swimlane/ngx-charts/release/utils/color-sets';
 import * as d3 from 'd3';
 
+declare var jQuery:any;
+
 import { Listing } from "./models/listing.model";
 import { ListingsService } from "./services/listings.service";
 import { GlobalService } from "./services/global.service";
 import { DetailService } from "./services/detail.service";
+import { SettingsService } from "./services/settings.service";
 
 @Component({
 	selector: 'app-root',
@@ -23,6 +26,8 @@ export class AppComponent
 	private favorites: string[] = [];
 
 	private global: any;
+
+	private settings;
 
 	private opened: boolean = false;
 
@@ -43,7 +48,16 @@ export class AppComponent
 
 	private data = [];
 
-	constructor(private globalService: GlobalService, private listingsService: ListingsService, private detailService: DetailService, private titleService: Title)
+	constructor(private globalService: GlobalService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
+	{
+		this.settings = this.settingsService.getSettings();
+		this.loadData();
+		this.loadFavorites();
+		this.setColorScheme('cool');
+		this.startTooltip();
+	}
+
+	private loadData()
 	{
 		this.global = this.globalService.getGlobal().subscribe(
 			(response: Response) => {
@@ -54,17 +68,25 @@ export class AppComponent
 				this.global = data;
 			}
 		);
+	}
 
+	private loadFavorites()
+	{
 		if(localStorage.getItem('favorites') != null)
 			this.favorites = JSON.parse(localStorage.getItem('favorites'));
 		else
 			this.favorites = [];
-		
-
-		this.setColorScheme('cool');
 	}
 
-	setColorScheme(name)
+	private startTooltip()
+	{
+		jQuery(function()
+		{
+			jQuery('[data-toggle="tooltip"]').tooltip();
+		});
+	}
+
+	private setColorScheme(name)
 	{
 		this.selectedColorScheme = name;
 		this.colorScheme = ngxChartsColorsets.find(s => s.name === name);
