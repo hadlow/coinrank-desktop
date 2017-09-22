@@ -13,12 +13,14 @@ import { DetailService } from './services/detail.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		HomeComponent,
-		SettingsComponent
+		SettingsComponent,
+		FooterComponent
 	],
 	imports: [
 		BrowserModule,
