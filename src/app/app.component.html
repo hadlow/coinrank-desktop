@@ -24,9 +24,59 @@
 
 				<div class="subheading">
 					<div class="container-fluid">
-						<div class="row pt-3 pb-4">
+						<div class="row pt-3 pb-2">
+							<div class="col-sm-3">
+								<div class="btn-group btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">Mined
+									</label>
+
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">Pre-mined
+									</label>
+								</div>
+							</div>
+
+							<div class="col-sm-3">
+								<div class="btn-group btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">PoW
+									</label>
+
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">PoS
+									</label>
+								</div>
+							</div>
+
 							<div class="col-sm-6">
-								<div class="d-none btn-group btn-group-sm" data-toggle="buttons">
+								<div class="btn-group btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">SHA256
+									</label>
+
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">Scrypt
+									</label>
+
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">X11
+									</label>
+
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">X13/X15
+									</label>
+
+									<label class="btn btn-dark active">
+										<input type="checkbox" checked autocomplete="off">Ethash
+									</label>
+								</div>
+							</div>
+						</div>
+
+						<div class="row d-none pt-3 pb-4">
+							<div class="col-sm-6">
+								<div class="btn-group btn-group-sm" data-toggle="buttons">
 									<label class="btn btn-primary active">
 										<input type="checkbox" autocomplete="off" checked>Currencies <span class="badge badge-secondary">{{ global.active_currencies }}</span>
 									</label>
@@ -117,13 +167,7 @@
 			</div>
 		</div>
 
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-12">
-					<p>&copy; Coinrank 2017</p>
-				</div>
-			</div>
-		</div>
+		<app-footer></app-footer>
 	</div>
 
 	<div class="content">

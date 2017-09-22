@@ -36,6 +36,11 @@
         @include button-variant($light, $light);
     }
 
+    .badge-primary {
+        color: #25272b;
+        background-color: $gray-200;
+    }
+
     .header {
         border-bottom: 1px solid #000;
 

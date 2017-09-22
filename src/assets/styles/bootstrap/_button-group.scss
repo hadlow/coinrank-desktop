@@ -123,6 +123,24 @@
   }
 }
 
+.btn-group-justified {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  .btn,
+  .btn-group {
+    float: none;
+    display: table-cell;
+    width: 1%;
+    .btn {
+      width: 100%;
+    }
+    .dropdown-menu {
+      left: auto;
+    }
+  }
+}
 
 //
 // Vertical button groups
