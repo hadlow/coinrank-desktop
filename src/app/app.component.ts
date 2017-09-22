@@ -147,7 +147,7 @@ export class AppComponent
 
 		for(let listing of this.listings)
 		{
-			if(listing.getName().toLowerCase().includes(search))
+			if(listing.getName().toLowerCase().includes(search) || listing.getSymbol().toLowerCase().includes(search))
 				this.shown_listings.push(listing);
 		}
 	}
