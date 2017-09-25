@@ -123,6 +123,11 @@ export class Listing extends Serializable
 		return this.premined;
 	}
 
+	public getId()
+	{
+		return this.getSymbol();
+	}
+
 	public getValue(type)
 	{
 		switch(type)

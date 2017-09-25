@@ -114,7 +114,7 @@
 								<tr *ngIf="favorites.indexOf(listing.getId()) > -1" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
 									<td>
 										<div class="icon">
-											<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
+											<img src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ listing.getSymbol() }}.png" class="img-fluid" />
 
 											<div class="badge badge-primary">{{ listing.getRank() }}</div>
 										</div>
@@ -131,7 +131,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="d-none d-sm-table-cell open-hide"><img src="http://coinrank-api.dev/charts/{{ listing.getSymbol() }}" width="200" class="img-fluid chart" /></td>
+									<td class="d-none d-sm-table-cell open-hide"><img src="https://s3-us-west-1.amazonaws.com/coinrank/charts/{{ listing.getSymbol() }}.png" width="200" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 							
@@ -139,7 +139,7 @@
 								<tr *ngIf="favorites.indexOf(listing.getId()) < 0" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
 									<td>
 										<div class="icon">
-											<img src="https://files.coinmarketcap.com/static/img/coins/32x32/{{ listing.getId() }}.png" class="img-fluid" />
+											<img src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ listing.getSymbol() }}.png" class="img-fluid" />
 
 											<div class="badge badge-primary">{{ listing.getRank() }}</div>
 										</div>
@@ -156,7 +156,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="d-none d-sm-table-cell open-hide"><img src="http://coinrank-api.dev/charts/{{ listing.getSymbol() }}" width="200" class="img-fluid chart" /></td>
+									<td class="d-none d-sm-table-cell open-hide"><img src="https://s3-us-west-1.amazonaws.com/coinrank/charts/{{ listing.getSymbol() }}.png" width="200" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 						</tbody>

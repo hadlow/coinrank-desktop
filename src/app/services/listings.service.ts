@@ -12,7 +12,7 @@ export class ListingsService
 
 	constructor(private http: Http)
 	{
-		this.loadFromServer();
+		
 	}
 
 	loadFromServer()
@@ -22,19 +22,18 @@ export class ListingsService
 				const data = response.json();
 
 				this.global = data['global'];
-				var ticker = data['ticker'];
+				const ticker = data['ticker'];
+				console.log(ticker);
 
-				for(const listing of ticker)
+				for(let listing of ticker)
 				{
 					listing.volume_usd = listing['24h_volume_usd'];
 					const listingObj = new Listing(this.global).fromJSON(listing);
 
 					this.listings.push(listingObj);
 				}
-
-				console.log(this.listings);
 			}
-		);;
+		);
 	}
 
 	getListing(symbol)
