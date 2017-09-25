@@ -54,6 +54,7 @@ export class AppComponent
 		this.loadFavorites();
 		this.setColorScheme('cool');
 		this.startTooltip();
+		this.listingsService.loadFromServer();
 	}
 
 	private loadData()
@@ -62,6 +63,7 @@ export class AppComponent
 		this.global = this.listingsService.getGlobal();
 
 		this.shown_listings = this.listings;
+		this.sortListings();
 	}
 
 	private loadFavorites()
