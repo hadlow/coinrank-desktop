@@ -26,48 +26,48 @@
 					<div class="container-fluid">
 						<div class="row pt-3 pb-2">
 							<div class="col-sm-3">
-								<div class="btn-group btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-dark active">
+								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">Mined
 									</label>
 
-									<label class="btn btn-dark active">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">Pre-mined
 									</label>
 								</div>
 							</div>
 
 							<div class="col-sm-3">
-								<div class="btn-group btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-dark active">
+								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">PoW
 									</label>
 
-									<label class="btn btn-dark active">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">PoS
 									</label>
 								</div>
 							</div>
 
 							<div class="col-sm-6">
-								<div class="btn-group btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-dark active">
+								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">SHA256
 									</label>
 
-									<label class="btn btn-dark active">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">Scrypt
 									</label>
 
-									<label class="btn btn-dark active">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">X11
 									</label>
 
-									<label class="btn btn-dark active">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">X13/X15
 									</label>
 
-									<label class="btn btn-dark active">
+									<label class="btn btn-outline-dark active">
 										<input type="checkbox" checked autocomplete="off">Ethash
 									</label>
 								</div>
@@ -105,7 +105,7 @@
 								<th class="d-none d-md-table-cell open-hide"><span [ngClass]="sort == 'market_cap' ? 'sort ' + sort_direction : ''" (click)="onSortClick('market_cap')">Market Cap</span></th>
 								<th class="d-none d-lg-table-cell open-hide"><span [ngClass]="sort == '24h_volume' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_volume')">24H Volume</span></th>
 								<th class="d-none d-xl-table-cell open-hide">Market Share</th>
-								<th class="d-none d-sm-table-cell open-hide">Chart</th>
+								<th class="d-none d-sm-table-cell open-hide">7 Day Chart</th>
 							</tr>
 						</thead>
 						
@@ -131,7 +131,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
+									<td class="d-none d-sm-table-cell open-hide"><img src="http://coinrank-api.dev/charts/{{ listing.getSymbol() }}" width="200" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 							
@@ -156,7 +156,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="d-none d-sm-table-cell open-hide"><img src="https://files.coinmarketcap.com/generated/sparklines/1.png" class="img-fluid" /></td>
+									<td class="d-none d-sm-table-cell open-hide"><img src="http://coinrank-api.dev/charts/{{ listing.getSymbol() }}" width="200" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 						</tbody>

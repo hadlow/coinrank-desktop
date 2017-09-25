@@ -8,47 +8,53 @@ export class ListingsService
 {
 	private listings: Listing[] = [];
 
+	private global = [];
+
 	constructor(private http: Http)
 	{
-
+		this.loadFromServer();
 	}
 
-	loadFromServer(global)
+	loadFromServer()
 	{
-		this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=100').subscribe(
+		this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/index.json').subscribe(
 			(response: Response) => {
 				const data = response.json();
 
-				for(const listing of data)
+				this.global = data['global'];
+				var ticker = data['ticker'];
+
+				for(const listing of ticker)
 				{
 					listing.volume_usd = listing['24h_volume_usd'];
-					const listingObj = new Listing(global).fromJSON(listing);
+					const listingObj = new Listing(this.global).fromJSON(listing);
 
 					this.listings.push(listingObj);
 				}
+
+				console.log(this.listings);
 			}
-		);
+		);;
 	}
 
-	getListing(id)
+	getListing(symbol)
 	{
 		for(let listing of this.listings)
 		{
-			if(listing.getId() == id)
+			if(listing.getSymbol() == symbol)
 				return listing;
 		}
 
 		return null;
 	}
 
-	getListings(global)
+	getListings()
 	{
-		// If storage is empty
-		if(this.listings.length == 0)
-			// Load from the server
-			this.loadFromServer(global);
-
-		// Then return the listings
 		return this.listings;
+	}
+
+	getGlobal()
+	{
+		return this.global;
 	}
 }
