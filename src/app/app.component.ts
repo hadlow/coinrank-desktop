@@ -7,7 +7,6 @@ declare var jQuery:any;
 
 import { Listing } from "./models/listing.model";
 import { ListingsService } from "./services/listings.service";
-import { GlobalService } from "./services/global.service";
 import { DetailService } from "./services/detail.service";
 import { SettingsService } from "./services/settings.service";
 
@@ -25,9 +24,9 @@ export class AppComponent
 
 	private favorites: string[] = [];
 
-	private global: any;
-
 	private settings;
+
+	private global = [];
 
 	private opened: boolean = false;
 
@@ -48,7 +47,7 @@ export class AppComponent
 
 	private data = [];
 
-	constructor(private globalService: GlobalService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
+	constructor(private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
@@ -59,15 +58,10 @@ export class AppComponent
 
 	private loadData()
 	{
-		this.global = this.globalService.getGlobal().subscribe(
-			(response: Response) => {
-				this.listings = this.listingsService.getListings(response.json());
-				this.shown_listings = this.listings;
+		this.listings = this.listingsService.getListings();
+		this.global = this.listingsService.getGlobal();
 
-				const data = response.json();
-				this.global = data;
-			}
-		);
+		this.shown_listings = this.listings;
 	}
 
 	private loadFavorites()
@@ -167,12 +161,12 @@ export class AppComponent
 
 	onFavoriteClick(listing: Listing)
 	{
-		if(this.favorites.indexOf(listing.getId()) > -1)
+		if(this.favorites.indexOf(listing.getSymbol()) > -1)
 		{
-			var index = this.favorites.indexOf(listing.getId());
+			var index = this.favorites.indexOf(listing.getSymbol());
 			this.favorites.splice(index, 1);
 		} else {
-			this.favorites.push(listing.getId());
+			this.favorites.push(listing.getSymbol());
 		}
 
 		localStorage.setItem('favorites', JSON.stringify(this.favorites));
@@ -191,6 +185,6 @@ export class AppComponent
 		if(this.viewing == null)
 			return false;
 
-		return listing.getId() == this.viewing.getId();
+		return listing.getSymbol() == this.viewing.getSymbol();
 	}
 }

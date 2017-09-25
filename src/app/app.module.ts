@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { NgxChartsModule } from "@swimlane/ngx-charts";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { GlobalService } from './services/global.service';
 import { ListingsService } from './services/listings.service';
 import { SettingsService } from './services/settings.service';
 import { DetailService } from './services/detail.service';
@@ -31,7 +30,6 @@ import { FooterComponent } from './footer/footer.component';
 	],
 	providers: [
 		Title,
-		GlobalService,
 		ListingsService,
 		SettingsService,
 		DetailService

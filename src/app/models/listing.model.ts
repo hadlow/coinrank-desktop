@@ -4,8 +4,6 @@ export class Listing extends Serializable
 {
 	private global = [];
 
-	private id = '';
-
 	private name = '';
 
 	private symbol = '';
@@ -13,8 +11,6 @@ export class Listing extends Serializable
 	private rank = '';
 
 	private price_usd = '';
-
-	private price_btc = '';
 
 	private volume_usd = '';
 
@@ -30,17 +26,16 @@ export class Listing extends Serializable
 
 	private percent_change_7d = '';
 
-	private last_updated = '';
+	private algorithm = '';
+
+	private proof = '';
+
+	private premined = '';
 
 	constructor(global)
 	{
 		super();
 		this.global = global;
-	}
-
-	public getId()
-	{
-		return this.id;
 	}
 
 	public getName()
@@ -61,11 +56,6 @@ export class Listing extends Serializable
 	public getPriceUsd()
 	{
 		return Number(this.price_usd);
-	}
-
-	public getPriceBtc()
-	{
-		return Number(this.price_btc);
 	}
 
 	public getVolumUsd()
@@ -118,9 +108,19 @@ export class Listing extends Serializable
 		return (Number(this.percent_change_7d) / 100) * Number(this.price_usd);
 	}
 
-	public getLastUpdated()
+	public getAlgorithm()
 	{
-		return this.last_updated;
+		return this.algorithm;
+	}
+
+	public getProof()
+	{
+		return this.proof;
+	}
+
+	public getPremined()
+	{
+		return this.premined;
 	}
 
 	public getValue(type)
@@ -131,7 +131,7 @@ export class Listing extends Serializable
 				return this.getPercentChange24H();
 
 			case 'price':
-				return this.getPriceBtc();
+				return this.getPriceUsd();
 
 			case 'market_cap':
 				return this.getMarketCapUsd();
