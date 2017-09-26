@@ -36,6 +36,8 @@ export class AppComponent
 
 	private sort_direction = 'down';
 
+	private filter = [['0', '1'], ['PoW', 'PoS', 'N/A'], ['SHA256', 'Scrypt', 'X11', 'DPoS', 'Ethash', 'other']];
+
 	private limit = 30;
 
 	curveType: string = 'Linear';
@@ -86,6 +88,60 @@ export class AppComponent
 	{
 		this.selectedColorScheme = name;
 		this.colorScheme = ngxChartsColorsets.find(s => s.name === name);
+	}
+
+	private applyFilters()
+	{
+		this.shown_listings = [];
+		var show = true;
+		var default_algorithms = ['SHA256', 'Scrypt', 'X11', 'DPoS', 'Ethash'];
+
+		for(let listing of this.listings)
+		{
+			show = true;
+
+			// If algorithm option is in algorithm array
+			if(this.filter[2].indexOf(listing.getAlgorithm()) == -1)
+				show = false;
+
+			// Is other active and not a default algorithm
+			if(this.filter[2].indexOf('other') != -1 && default_algorithms.indexOf(listing.getAlgorithm()) == -1)
+				show = true;
+
+			// If premined option is in premined array
+			if(this.filter[0].indexOf(listing.getPremined()) == -1)
+				show = false;
+
+			// If proof option is in proof array
+			if(this.filter[1].indexOf(listing.getProof()) == -1)
+				show = false;
+
+			if(show)
+				this.shown_listings.push(listing);
+		}
+	}
+
+	filterActive(type, filter)
+	{
+		if(this.filter[type].indexOf(filter) != -1)
+			return true;
+
+		return false;
+	}
+
+	filterListings(type, filter)
+	{
+		var index = this.filter[type].indexOf(filter);
+
+		// If filter does not exist
+		if(index == -1)
+			// Add to filter
+			this.filter[type].push(filter);
+		else
+			// Remove from filter
+			this.filter[type].splice(index, 1);
+
+		this.applyFilters();
 	}
 
 	sortListingsUp()

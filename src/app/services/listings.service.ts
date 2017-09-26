@@ -15,15 +15,19 @@ export class ListingsService
 		
 	}
 
+	private getRandomInt(min, max)
+	{
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
 	loadFromServer()
 	{
-		this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/index.json').subscribe(
+		this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/index.json?request=' + this.getRandomInt(1000000, 9999999)).subscribe(
 			(response: Response) => {
 				const data = response.json();
 
 				this.global = data['global'];
 				const ticker = data['ticker'];
-				console.log(ticker);
 
 				for(let listing of ticker)
 				{
