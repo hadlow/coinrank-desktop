@@ -32,10 +32,13 @@ export class Listing extends Serializable
 
 	private premined = '';
 
+	private random = 0;
+
 	constructor(global)
 	{
 		super();
 		this.global = global;
+		this.getRandomInt(1000000, 9999999);
 	}
 
 	public getName()
@@ -123,9 +126,9 @@ export class Listing extends Serializable
 		return this.premined;
 	}
 
-	public getId()
+	public getChart()
 	{
-		return this.getSymbol();
+		return 'https://s3-us-west-1.amazonaws.com/coinrank/charts/' + this.getSymbol() + '.png?request=' + this.random;
 	}
 
 	public getValue(type)
@@ -165,5 +168,10 @@ export class Listing extends Serializable
 	public getMarketShare(totalMarketCap)
 	{
 		return (Number(this.market_cap_usd) / this.global['total_market_cap_usd']) * 100;
+	}
+
+	private getRandomInt(min, max)
+	{
+		this.random = Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 }

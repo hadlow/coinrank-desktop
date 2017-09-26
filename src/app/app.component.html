@@ -27,11 +27,11 @@
 						<div class="row pt-3 pb-2">
 							<div class="col-sm-3">
 								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('0', '0')">
 										<input type="checkbox" checked autocomplete="off">Mined
 									</label>
 
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('0', '1')">
 										<input type="checkbox" checked autocomplete="off">Pre-mined
 									</label>
 								</div>
@@ -39,36 +39,44 @@
 
 							<div class="col-sm-3">
 								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('1', 'PoW')">
 										<input type="checkbox" checked autocomplete="off">PoW
 									</label>
 
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('1', 'PoS')">
 										<input type="checkbox" checked autocomplete="off">PoS
+									</label>
+
+									<label class="btn btn-outline-dark active" (click)="filterListings('1', 'N/A')">
+										<input type="checkbox" checked autocomplete="off">N/A
 									</label>
 								</div>
 							</div>
 
 							<div class="col-sm-6">
 								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'SHA256')">
 										<input type="checkbox" checked autocomplete="off">SHA256
 									</label>
 
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'Scrypt')">
 										<input type="checkbox" checked autocomplete="off">Scrypt
 									</label>
 
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'X11')">
 										<input type="checkbox" checked autocomplete="off">X11
 									</label>
 
-									<label class="btn btn-outline-dark active">
-										<input type="checkbox" checked autocomplete="off">X13/X15
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'DPoS')">
+										<input type="checkbox" checked autocomplete="off">DPoS
 									</label>
 
-									<label class="btn btn-outline-dark active">
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'Ethash')">
 										<input type="checkbox" checked autocomplete="off">Ethash
+									</label>
+
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'other')">
+										<input type="checkbox" checked autocomplete="off">Other
 									</label>
 								</div>
 							</div>
@@ -111,7 +119,7 @@
 						
 						<tbody>
 							<ng-container *ngFor="let listing of shown_listings">
-								<tr *ngIf="favorites.indexOf(listing.getId()) > -1" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
+								<tr *ngIf="favorites.indexOf(listing.getSymbol()) > -1" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
 									<td>
 										<div class="icon">
 											<img src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ listing.getSymbol() }}.png" class="img-fluid" />
@@ -131,12 +139,12 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="d-none d-sm-table-cell open-hide"><img src="https://s3-us-west-1.amazonaws.com/coinrank/charts/{{ listing.getSymbol() }}.png" width="200" class="img-fluid chart" /></td>
+									<td class="text-center d-none d-sm-table-cell open-hide"><img src="{{ listing.getChart() }}" width="200" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 							
 							<ng-container *ngFor="let listing of shown_listings | slice:0:limit; let i=index">
-								<tr *ngIf="favorites.indexOf(listing.getId()) < 0" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
+								<tr *ngIf="favorites.indexOf(listing.getSymbol()) < 0" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
 									<td>
 										<div class="icon">
 											<img src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ listing.getSymbol() }}.png" class="img-fluid" />
@@ -156,7 +164,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="d-none d-sm-table-cell open-hide"><img src="https://s3-us-west-1.amazonaws.com/coinrank/charts/{{ listing.getSymbol() }}.png" width="200" class="img-fluid chart" /></td>
+									<td class="text-center d-none d-sm-table-cell open-hide"><img src="{{ listing.getChart() }}" width="200" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 						</tbody>
