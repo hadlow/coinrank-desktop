@@ -170,7 +170,9 @@
 						</tbody>
 					</table>
 
-					<div class="text-center pb-5"><button class="btn btn-primary" (click)="limit = limit + 30">Load more</button></div>
+					<h3 *ngIf="listings?.length < 1" class="text-center">Loading coins</h3>
+
+					<div *ngIf="listings?.length > 0" class="text-center pb-5"><button class="btn btn-primary" (click)="limit = limit + 30"><i class="fa fa-caret-down"></i> Show More</button></div>
 				</div>
 			</div>
 		</div>
@@ -183,7 +185,11 @@
 			<div class="options">
 				<div class="row">
 					<div class="col-sm-6">
-						
+						<div class="btn-group btn-group-sm" role="group">
+							<a href="{{ detailed?.info.website }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="{{ detailed?.info.website }}"><i class="fa fa-external-link"></i></a>
+							<a href="http://www.twitter.com/{{ detailed?.info.twitter }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="{{ detailed?.info.twitter }}"><i class="fa fa-twitter"></i></a>
+							<button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Embed on your website"><i class="fa fa-code"></i></button>
+						</div>
 					</div>
 
 					<div class="col-sm-6">
@@ -195,9 +201,12 @@
 			<div class="heading">
 				<div class="row no-gutters">
 					<div class="col-sm-8">
-						<h2 class="mt-0 mb-0">{{ viewing?.getName() }} <a href="http://bitcoin.org" target="_blank" data-toggle="tooltip" data-placement="top" title="http://bitcoin.org"><small><i class="fa fa-external-link"></i></small></a></h2>
+						<img *ngIf="viewing" src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ viewing?.getSymbol() }}.png" class="pull-left mr-2 mt-1" />
+						
+						<h2 class="mt-0 mb-0">{{ viewing?.getName() }}</h2>
 						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
-						<p class="mt-0 mb-0 text-uppercase small"><span class="mr-4"></span><span class="mr-4">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</span>Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }}</p>
+						<p class="mt-2 mb-0 text-uppercase small">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
+						<p *ngIf="viewing?.getTotalSupply() != 0" class="mt-0 mb-0 text-uppercase small">Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
 					</div>
 
 					<div class="col-sm-4 text-right">
@@ -208,26 +217,49 @@
 				</div>
 			</div>
 
-			<div class="chart">
-				<!--<ngx-charts-line-chart
-				class="chart-container"
-				[scheme]="colorScheme"
-				schemeType="ordinal"
-				[results]="data"
-				legend="false"
-				gradient="false"
-				xAxis="true"
-				yAxis="false"
-				showXAxisLabel="false"
-				showYAxisLabel="false"
-				autoScale="true"
-				timeline="true"
-				showGridLines="false"
-				[curve]="curve">
-				</ngx-charts-line-chart>-->
+			<div class="chart mt-5">
+				<div class="row">
+					<div id="chartdiv" [style.width.%]="100" [style.height.px]="400"></div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12 col-md-8 mt-3 ml-auto mr-auto">
+						<ul class="nav nav-pills nav-fill">
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1day'}" (click)="onChartClick('1day')">1 Day</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1month'}" (click)="onChartClick('1month')">1 Month</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '3month'}" (click)="onChartClick('3month')">3 Months</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1year'}" (click)="onChartClick('1year')">1 Year</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == 'all'}" (click)="onChartClick('all')">All</span></li>
+						</ul>
+					</div>
+				</div>
 			</div>
 
+			<div class="markets">
+				<h2>Markets</h2>
 
+				<table class="table">
+					<thead>
+						<tr>
+							<th>From</th>
+							<th>To</th>
+							<th>Volume</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr *ngFor="let market of detailed?.markets">
+							<td>{{ market[0] }}</td>
+							<td>{{ market[1] }}</td>
+							<td>{{ market[2] }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

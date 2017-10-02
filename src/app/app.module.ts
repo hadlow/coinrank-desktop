@@ -2,8 +2,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { NgxChartsModule } from "@swimlane/ngx-charts";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AmChartsModule } from "@amcharts/amcharts3-angular";
 
 import { ListingsService } from './services/listings.service';
 import { SettingsService } from './services/settings.service';
@@ -25,8 +24,7 @@ import { FooterComponent } from './footer/footer.component';
 		BrowserModule,
 		FormsModule,
 		HttpModule,
-		NgxChartsModule,
-		BrowserAnimationsModule
+		AmChartsModule
 	],
 	providers: [
 		Title,
