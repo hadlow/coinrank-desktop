@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { colorSets as ngxChartsColorsets } from '@swimlane/ngx-charts/release/utils/color-sets';
-import * as d3 from 'd3';
+import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 
-declare var jQuery:any;
+declare var jQuery: any;
 
-import { Listing } from "./models/listing.model";
-import { ListingsService } from "./services/listings.service";
-import { DetailService } from "./services/detail.service";
-import { SettingsService } from "./services/settings.service";
+import { Listing } from './models/listing.model';
+import { ListingsService } from './services/listings.service';
+import { DetailService } from './services/detail.service';
+import { SettingsService } from './services/settings.service';
 
 @Component({
 	selector: 'app-root',
@@ -19,6 +18,10 @@ import { SettingsService } from "./services/settings.service";
 export class AppComponent
 {
 	private listings: Listing[] = [];
+
+	private searched_listings: Listing[] = [];
+
+	private filtered_listings: Listing[] = [];
 
 	private shown_listings: Listing[] = [];
 
@@ -32,6 +35,8 @@ export class AppComponent
 
 	private viewing: Listing;
 
+	private detailed = null;
+
 	private sort = 'market_cap';
 
 	private sort_direction = 'down';
@@ -40,23 +45,27 @@ export class AppComponent
 
 	private limit = 30;
 
-	curveType: string = 'Linear';
-	curve = d3.curveLinear;
-
-	colorScheme: any;
-	schemeType: string = 'ordinal';
-	selectedColorScheme: string;
-
 	private data = [];
 
-	constructor(private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
+	private chart: AmChart;
+
+	private chart_time = '1month';
+
+	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
 		this.loadFavorites();
-		this.setColorScheme('cool');
 		this.startTooltip();
 		this.listingsService.loadFromServer();
+	}
+
+	ngOnDestroy()
+	{
+		if(this.chart)
+		{
+			this.AmCharts.destroyChart(this.chart);
+		}
 	}
 
 	private loadData()
@@ -65,6 +74,7 @@ export class AppComponent
 		this.global = this.listingsService.getGlobal();
 
 		this.shown_listings = this.listings;
+		this.searched_listings = this.listings;
 		this.sortListings();
 	}
 
@@ -84,19 +94,13 @@ export class AppComponent
 		});
 	}
 
-	private setColorScheme(name)
-	{
-		this.selectedColorScheme = name;
-		this.colorScheme = ngxChartsColorsets.find(s => s.name === name);
-	}
-
 	private applyFilters()
 	{
-		this.shown_listings = [];
 		var show = true;
 		var default_algorithms = ['SHA256', 'Scrypt', 'X11', 'DPoS', 'Ethash'];
+		var listings = [];
 
-		for(let listing of this.listings)
+		for(let listing of this.searched_listings)
 		{
 			show = true;
 
@@ -117,8 +121,11 @@ export class AppComponent
 				show = false;
 
 			if(show)
-				this.shown_listings.push(listing);
+				listings.push(listing);
 		}
+
+		this.shown_listings = listings;
+		this.sortListings();
 	}
 
 	filterActive(type, filter)
@@ -195,13 +202,15 @@ export class AppComponent
 	onSearch(search: string)
 	{
 		search = search.toLowerCase();
-		this.shown_listings = [];
+		this.searched_listings = [];
 
 		for(let listing of this.listings)
 		{
 			if(listing.getName().toLowerCase().includes(search) || listing.getSymbol().toLowerCase().includes(search))
-				this.shown_listings.push(listing);
+				this.searched_listings.push(listing);
 		}
+
+		this.applyFilters();
 	}
 
 	onSortClick(sort)
@@ -211,10 +220,79 @@ export class AppComponent
 		this.sortListings();
 	}
 
+	onChartClick(time)
+	{
+		this.chart_time = time;
+		this.createChart();
+	}
+
 	onListingClick(listing: Listing)
 	{
 		this.opened = true;
-		this.viewing = this.detailService.getDetail(listing);
+		this.viewing = listing;
+
+		this.detailService.getDetail(listing.getSymbol()).subscribe(
+			(data: any[]) => {
+				this.detailed = data;
+				console.log(this.detailed);
+				
+				this.createChart();
+			}
+		);
+	}
+
+	createChart()
+	{
+		this.chart = this.AmCharts.makeChart("chartdiv", {
+			"type": "serial",
+			"theme": this.settings['2'],
+			"marginRight": 0,
+			"dataProvider": this.detailed.history[this.chart_time],
+			"graphs": [{
+				"valueAxis": "v1",
+				"fillAlphas": 0.4,
+				"valueField": "price",
+				"lineColor": "#23c493",
+				"graphLineAlpha": 0,
+				"balloonText": "<div style='margin:5px; font-size:12px;'>$<b>[[value]]</b></div>"
+			}, {
+				"valueAxis": "v2",
+				"fillAlphas": 0.4,
+				"valueField": "volume",
+				"lineColor": "#BBB",
+				"graphLineAlpha": 0,
+				"balloonText": "<div style='margin:5px; font-size:12px;'>$<b>[[value]]</b></div>"
+			}],
+			"valueAxes": [{
+				"id": "v1",
+				"axisAlpha": 0,
+				"labelsEnabled": true,
+				"title": "Price",
+				"position": "left",
+				"gridThickness": 0
+			},
+			{
+				"id": "v2",
+				"axisAlpha": 0,
+				"labelsEnabled": true,
+				"title": "Volume",
+				"position": "right",
+				"gridThickness": 0
+			}],
+			"chartCursor": {
+				"categoryBalloonDateFormat": "L:NNA, MMM D YYYY",
+				"cursorPosition": "mouse"
+			},
+			"categoryField": "date",
+			"categoryAxis": {
+				"minPeriod": "ss",
+				"gridThickness": 0,
+				"parseDates": true
+			},
+			"export": {
+				"enabled": false,
+			}
+		});
 	}
 
 	onFavoriteClick(listing: Listing)

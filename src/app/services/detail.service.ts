@@ -1,31 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import 'rxjs/Rx';
 
 import { Listing } from '../models/listing.model';
 
 @Injectable()
 export class DetailService
 {
-	private listing: Listing;
-
 	constructor(private http: Http)
 	{
 
 	}
 
-	loadFromServer()
+	private getRandomInt(min, max)
 	{
-		this.http.get('https://api.coinmarketcap.com/v1/global/');
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	getDetail(listing: Listing)
+	loadFromServer(symbol)
 	{
-		if(this.listing == null)
-			// Load from the server
-			this.loadFromServer();
-		
-		// Then return the listing
-		//return this.listing;
-		return listing;
+		return this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/detail/' + symbol + '.json?request=' + this.getRandomInt(1000000, 9999999)).map(
+			(response: Response) => {
+				const data = response.json();
+
+				return data;
+			}
+		);
+	}
+
+	getDetail(symbol)
+	{
+		// Load from the server
+		return this.loadFromServer(symbol);
 	}
 }

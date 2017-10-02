@@ -87,21 +87,14 @@
 		font-size: 1rem;
 		font-weight: 100;
 		padding: 8px 22px;
+		box-shadow: 0 0.125rem 0.75rem rgba(0,0,0,0.2);
 	}
 }
 
 .opened {
 	.listings {
 		.name {
-			padding-left: 6px;
-		}
-		
-		.icon {
-			width: 18px;
-		}
-
-		.favorite {
-			display: none;
+			padding-left: 10px;
 		}
 
 		.table th:first-child, .table td:first-child {
@@ -120,14 +113,6 @@
 			padding-left: 6px;
 		}
 		
-		.icon {
-			width: 18px;
-		}
-
-		.favorite {
-			display: none;
-		}
-
 		.table th:first-child, .table td:first-child {
 			padding-left: 0.75rem;
 		}
