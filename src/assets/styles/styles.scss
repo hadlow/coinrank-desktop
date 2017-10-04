@@ -12,6 +12,11 @@
     display: none !important;
 }
 
+.opened .open-fullwidth {
+    width: 100% !important;
+    min-width: 100% !important;
+}
+
 .dark {
     background: #25272b;
     color: $gray-200;

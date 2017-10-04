@@ -51,13 +51,14 @@ export class AppComponent
 
 	private chart_time = '1month';
 
+	private chart_logarithmic = false;
+
 	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
 		this.loadFavorites();
 		this.startTooltip();
-		this.listingsService.loadFromServer();
 	}
 
 	ngOnDestroy()
@@ -70,12 +71,34 @@ export class AppComponent
 
 	private loadData()
 	{
-		this.listings = this.listingsService.getListings();
-		this.global = this.listingsService.getGlobal();
+		this.listingsService.loadIndex().subscribe(
+			(data: any[]) => {
+				this.global = data[0];
+				this.listings = data[1];
 
+				this.initListings();
+				this.loadTicker();
+			}
+		);
+	}
+
+	private initListings()
+	{
 		this.shown_listings = this.listings;
 		this.searched_listings = this.listings;
 		this.sortListings();
+	}
+
+	private loadTicker()
+	{
+		this.listingsService.loadTicker().subscribe(
+			(data: any[]) => {
+				this.global = data[0];
+				this.listings = data[1];
+
+				this.initListings();
+			}
+		);
 	}
 
 	private loadFavorites()
@@ -226,6 +249,12 @@ export class AppComponent
 		this.createChart();
 	}
 
+	onLogarithmicClick(logarithmic)
+	{
+		this.chart_logarithmic = logarithmic;
+		this.createChart();
+	}
+
 	onListingClick(listing: Listing)
 	{
 		this.opened = true;
@@ -234,7 +263,6 @@ export class AppComponent
 		this.detailService.getDetail(listing.getSymbol()).subscribe(
 			(data: any[]) => {
 				this.detailed = data;
-				console.log(this.detailed);
 				
 				this.createChart();
 			}
@@ -265,6 +293,7 @@ export class AppComponent
 			}],
 			"valueAxes": [{
 				"id": "v1",
+				"logarithmic": this.chart_logarithmic,
 				"axisAlpha": 0,
 				"labelsEnabled": true,
 				"title": "Price",
@@ -273,6 +302,7 @@ export class AppComponent
 			},
 			{
 				"id": "v2",
+				"logarithmic": this.chart_logarithmic,
 				"axisAlpha": 0,
 				"labelsEnabled": true,
 				"title": "Volume",

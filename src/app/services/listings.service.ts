@@ -6,10 +6,6 @@ import { Listing } from '../models/listing.model';
 @Injectable()
 export class ListingsService
 {
-	private listings: Listing[] = [];
-
-	private global = [];
-
 	constructor(private http: Http)
 	{
 		
@@ -20,44 +16,49 @@ export class ListingsService
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	loadFromServer()
+	loadIndex()
 	{
-		this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/index.json?request=' + this.getRandomInt(1000000, 9999999)).subscribe(
+		return this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/index.json?request=' + this.getRandomInt(1000000, 9999999)).map(
 			(response: Response) => {
+				var listings = [];
 				const data = response.json();
 
-				this.global = data['global'];
+				var global = data['global'];
 				const ticker = data['ticker'];
 
 				for(let listing of ticker)
 				{
 					listing.volume_usd = listing['24h_volume_usd'];
-					const listingObj = new Listing(this.global).fromJSON(listing);
+					const listingObj = new Listing(global).fromJSON(listing);
 
-					this.listings.push(listingObj);
+					listings.push(listingObj);
 				}
+
+				return [global, listings];
 			}
 		);
 	}
 
-	getListing(symbol)
+	loadTicker()
 	{
-		for(let listing of this.listings)
-		{
-			if(listing.getSymbol() == symbol)
-				return listing;
-		}
+		return this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/ticker.json?request=' + this.getRandomInt(1000000, 9999999)).map(
+			(response: Response) => {
+				var listings = [];
+				const data = response.json();
 
-		return null;
-	}
+				var global = data['global'];
+				const ticker = data['ticker'];
 
-	getListings()
-	{
-		return this.listings;
-	}
+				for(let listing of ticker)
+				{
+					listing.volume_usd = listing['24h_volume_usd'];
+					const listingObj = new Listing(global).fromJSON(listing);
 
-	getGlobal()
-	{
-		return this.global;
+					listings.push(listingObj);
+				}
+
+				return [global, listings];
+			}
+		);
 	}
 }

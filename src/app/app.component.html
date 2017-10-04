@@ -25,7 +25,7 @@
 				<div class="subheading">
 					<div class="container-fluid">
 						<div class="row pt-3 pb-2">
-							<div class="col-sm-3">
+							<div class="col-lg-3 open-fullwidth">
 								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
 									<label class="btn btn-outline-dark active" (click)="filterListings('0', '0')">
 										<input type="checkbox" checked autocomplete="off">Mined
@@ -37,7 +37,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-3">
+							<div class="col-lg-3 open-fullwidth">
 								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
 									<label class="btn btn-outline-dark active" (click)="filterListings('1', 'PoW')">
 										<input type="checkbox" checked autocomplete="off">PoW
@@ -53,7 +53,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-6">
+							<div class="col-lg-6 open-fullwidth">
 								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
 									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'SHA256')">
 										<input type="checkbox" checked autocomplete="off">SHA256
@@ -207,6 +207,7 @@
 						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
 						<p class="mt-2 mb-0 text-uppercase small">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
 						<p *ngIf="viewing?.getTotalSupply() != 0" class="mt-0 mb-0 text-uppercase small">Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
+						<p *ngIf="detailed?.info.ico_status == 'Ongoing' || detailed?.info.ico_status == 'Finished'" class="mt-0 mb-0 text-uppercase"><span class="badge badge-primary">ICO {{ detailed?.info.ico_status }}</span></p>
 					</div>
 
 					<div class="col-sm-4 text-right">
@@ -236,29 +237,40 @@
 							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == 'all'}" (click)="onChartClick('all')">All</span></li>
 						</ul>
 					</div>
+
+					<div class="col-sm-12 col-md-8 mt-3 ml-auto mr-auto text-center">
+						<div class="btn-group btn-group-sm" role="group">
+							<button type="button" class="btn btn-dark" [ngClass]="{'active': !chart_logarithmic}" (click)="onLogarithmicClick(false)">Linear</button>
+							<button type="button" class="btn btn-dark" [ngClass]="{'active': chart_logarithmic}" (click)="onLogarithmicClick(true)">Logarithmic</button>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="markets">
-				<h2>Markets</h2>
+			<div class="markets mt-5">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2>Markets</h2>
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th>From</th>
-							<th>To</th>
-							<th>Volume</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<tr *ngFor="let market of detailed?.markets">
-							<td>{{ market[0] }}</td>
-							<td>{{ market[1] }}</td>
-							<td>{{ market[2] }}</td>
-						</tr>
-					</tbody>
-				</table>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>From</th>
+									<th>To</th>
+									<th>Volume</th>
+								</tr>
+							</thead>
+		
+							<tbody>
+								<tr *ngFor="let market of detailed?.markets">
+									<td>{{ viewing?.getSymbol() }}</td>
+									<td>{{ market[0] }}</td>
+									<td>{{ market[1] | currency:'USD':true:'1.0-0' }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
