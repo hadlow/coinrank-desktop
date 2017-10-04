@@ -67,8 +67,8 @@
 										<input type="checkbox" checked autocomplete="off">X11
 									</label>
 
-									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'DPoS')">
-										<input type="checkbox" checked autocomplete="off">DPoS
+									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'CryptoNight')">
+										<input type="checkbox" checked autocomplete="off">CryptoNight
 									</label>
 
 									<label class="btn btn-outline-dark active" (click)="filterListings('2', 'Ethash')">
@@ -139,7 +139,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="text-center d-none d-sm-table-cell open-hide"><img src="{{ listing.getChart() }}" width="200" class="img-fluid chart" /></td>
+									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 							
@@ -164,7 +164,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="text-center d-none d-sm-table-cell open-hide"><img src="{{ listing.getChart() }}" width="200" class="img-fluid chart" /></td>
+									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 						</tbody>

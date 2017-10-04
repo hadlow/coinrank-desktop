@@ -41,7 +41,7 @@ export class AppComponent
 
 	private sort_direction = 'down';
 
-	private filter = [['0', '1'], ['PoW', 'PoS', 'N/A'], ['SHA256', 'Scrypt', 'X11', 'DPoS', 'Ethash', 'other']];
+	private filter = [['0', '1'], ['PoW', 'PoS', 'N/A'], ['SHA256', 'Scrypt', 'X11', 'CryptoNight', 'Ethash', 'other']];
 
 	private limit = 30;
 
@@ -97,6 +97,7 @@ export class AppComponent
 			(data: any[]) => {
 				this.global = data[0];
 				this.listings = data[1];
+				console.log(this.listings);
 
 				this.initListings();
 			}
@@ -122,7 +123,7 @@ export class AppComponent
 	private applyFilters()
 	{
 		var show = true;
-		var default_algorithms = ['SHA256', 'Scrypt', 'X11', 'DPoS', 'Ethash'];
+		var default_algorithms = ['SHA256', 'Scrypt', 'X11', 'CryptoNight', 'Ethash'];
 		var listings = [];
 
 		for(let listing of this.searched_listings)
