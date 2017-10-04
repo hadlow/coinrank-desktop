@@ -180,7 +180,9 @@
 		<app-footer></app-footer>
 	</div>
 
-	<div class="content">
+	<div class="content" [ngClass]="{'loading': listing_loading}">
+		<div class="loading"><img src="/assets/images/loading-logo.png" /></div>
+		
 		<div class="container-fluid">
 			<div class="options">
 				<div class="row">

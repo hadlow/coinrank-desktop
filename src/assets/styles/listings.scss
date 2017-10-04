@@ -42,7 +42,6 @@
 		float: left;
 		padding-left: 10px;
 		margin-top: 2px;
-		width: 130px;
 		white-space: nowrap;
 		overflow: hidden;
 	}
@@ -98,6 +97,7 @@
 	.listings {
 		.name {
 			padding-left: 10px;
+			width: 122px;
 		}
 
 		.table th:first-child, .table td:first-child {

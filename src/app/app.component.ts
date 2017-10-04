@@ -53,6 +53,8 @@ export class AppComponent
 
 	private chart_logarithmic = false;
 
+	private listing_loading = true;
+
 	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
 	{
 		this.settings = this.settingsService.getSettings();
@@ -259,10 +261,12 @@ export class AppComponent
 	{
 		this.opened = true;
 		this.viewing = listing;
+		this.listing_loading = true;
 
 		this.detailService.getDetail(listing.getSymbol()).subscribe(
 			(data: any[]) => {
 				this.detailed = data;
+				this.listing_loading = false;
 				
 				this.createChart();
 			}
