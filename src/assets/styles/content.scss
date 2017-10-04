@@ -1,5 +1,35 @@
 .content {
 	display: none;
+	position: relative;
+
+	.loading {
+		position: absolute;
+		display: none;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 100;
+		background: RGBA(255, 255, 255, 1);
+
+		img {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -22.5px;
+			margin-left: -35.5px;
+		}
+	}
+
+	&.loading {
+		overflow: hidden;
+		
+		.loading {
+			display: block;
+		}
+	}
 	
 	.options {
 		height: 65px;
@@ -8,10 +38,12 @@
 		.back {
 			border-radius: 50px;
 			padding: 2px;
-			float: right;
+			right: 18px;
 			width: 28px;
 			height: 28px;
 			text-align: center;
+			z-index: 200;
+			position: absolute;
 			cursor: pointer;
 			@include transition($btn-transition);
 		}
