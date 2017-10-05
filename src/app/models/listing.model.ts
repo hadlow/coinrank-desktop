@@ -159,12 +159,12 @@ export class Listing extends Serializable
 		return 'https://s3-us-west-1.amazonaws.com/coinrank/charts/' + this.getSymbol() + '.png?request=' + this.random;
 	}
 
-	public getValue(type)
+	public getValue(type, time = '24h')
 	{
 		switch(type)
 		{
-			case '24h_change':
-				return this.getPercentChange24H();
+			case 'change':
+				return this.getPercentChange(time);
 
 			case 'price':
 				return this.getPriceUsd();

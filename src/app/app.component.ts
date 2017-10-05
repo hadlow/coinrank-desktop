@@ -180,10 +180,10 @@ export class AppComponent
 	sortListingsUp()
 	{
 		this.shown_listings.sort((l1, l2) => {
-			if(l1.getValue(this.sort) > l2.getValue(this.sort))
+			if(l1.getValue(this.sort, this.settings[0]) > l2.getValue(this.sort, this.settings[0]))
 				return 1;
 		
-			if(l1.getValue(this.sort) < l2.getValue(this.sort))
+			if(l1.getValue(this.sort, this.settings[0]) < l2.getValue(this.sort, this.settings[0]))
 				return -1;
 		
 			return 0;
@@ -193,10 +193,10 @@ export class AppComponent
 	sortListingsDown()
 	{
 		this.shown_listings.sort((l1, l2) => {
-			if(l1.getValue(this.sort) < l2.getValue(this.sort))
+			if(l1.getValue(this.sort, this.settings[0]) < l2.getValue(this.sort, this.settings[0]))
 				return 1;
 		
-			if(l1.getValue(this.sort) > l2.getValue(this.sort))
+			if(l1.getValue(this.sort, this.settings[0]) > l2.getValue(this.sort, this.settings[0]))
 				return -1;
 		
 			return 0;
