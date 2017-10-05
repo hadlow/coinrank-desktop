@@ -108,11 +108,11 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th><span [ngClass]="sort == '24h_change' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_change')">24H Change</span></th>
+								<th><span [ngClass]="sort == '24h_change' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_change')">{{ settings[0] }} Change</span></th>
 								<th><span [ngClass]="sort == 'price' ? 'sort ' + sort_direction : ''" (click)="onSortClick('price')">Price</span></th>
 								<th class="d-none d-md-table-cell open-hide"><span [ngClass]="sort == 'market_cap' ? 'sort ' + sort_direction : ''" (click)="onSortClick('market_cap')">Market Cap</span></th>
-								<th class="d-none d-lg-table-cell open-hide"><span [ngClass]="sort == '24h_volume' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_volume')">24H Volume</span></th>
 								<th class="d-none d-xl-table-cell open-hide">Market Share</th>
+								<th class="d-none d-lg-table-cell open-hide"><span [ngClass]="sort == '24h_volume' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_volume')">24H Volume</span></th>
 								<th class="d-none d-sm-table-cell open-hide">7 Day Chart</th>
 							</tr>
 						</thead>
@@ -134,11 +134,11 @@
 
 										<div class="favorite active" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
 									</td>
-									<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
-									<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
+									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:'USD':true:'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
-									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
@@ -159,11 +159,11 @@
 
 										<div class="favorite" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
 									</td>
-									<td class="text-center text-{{ listing.getColor() }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection() }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange24H() }}%<span> ({{ listing.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p></td>
-									<td class="text-center"><span class="badge badge-{{ listing.getColor() }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
-									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
-									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:'USD':true:'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide"><p class="mt-0 mb-0">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</p><p class="mt-0 mb-0 text-{{ listing.getColor(settings[0]) }}"></p></td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
 									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
@@ -214,7 +214,7 @@
 
 					<div class="col-sm-4 text-right">
 						<h1 class="mt-0 mb-0">{{ viewing?.getPriceUsd() | currency:'USD':true:'1.2-5' }}</h1>
-						<p class="mt-0 mb-0 text-{{ viewing?.getColor() }}">{{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor(settings[0]) }}">{{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p>
 						<p class="mt-0 mb-0 text-uppercase small">Volume (24h): {{ viewing?.getVolumUsd() | currency:'USD':true:'1.0-0' }}</p>
 					</div>
 				</div>
