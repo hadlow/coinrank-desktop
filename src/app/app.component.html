@@ -108,7 +108,7 @@
 						<thead>
 							<tr>
 								<th>Name</th>
-								<th><span [ngClass]="sort == '24h_change' ? 'sort ' + sort_direction : ''" (click)="onSortClick('24h_change')">{{ settings[0] }} Change</span></th>
+								<th><span [ngClass]="sort == 'change' ? 'sort ' + sort_direction : ''" (click)="onSortClick('change')">{{ settings[0] }} Change</span></th>
 								<th><span [ngClass]="sort == 'price' ? 'sort ' + sort_direction : ''" (click)="onSortClick('price')">Price</span></th>
 								<th class="d-none d-md-table-cell open-hide"><span [ngClass]="sort == 'market_cap' ? 'sort ' + sort_direction : ''" (click)="onSortClick('market_cap')">Market Cap</span></th>
 								<th class="d-none d-xl-table-cell open-hide">Market Share</th>
