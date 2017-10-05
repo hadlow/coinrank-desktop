@@ -81,6 +81,20 @@ export class Listing extends Serializable
 		return Number(this.total_supply);
 	}
 
+	public getPercentChange(time)
+	{
+		if(time == '1h')
+			return this.getPercentChange1H();
+
+		if(time == '24h')
+			return this.getPercentChange24H();
+
+		if(time == '7d')
+			return this.getPercentChange7D();
+
+		return 0;
+	}
+
 	public getPercentChange1H()
 	{
 		return Number(this.percent_change_1h);
@@ -94,6 +108,20 @@ export class Listing extends Serializable
 	public getPercentChange7D()
 	{
 		return Number(this.percent_change_7d);
+	}
+
+	public getPriceChange(time)
+	{
+		if(time == '1h')
+			return this.getPriceChange1H();
+
+		if(time == '24h')
+			return this.getPriceChange24H();
+
+		if(time == '7d')
+			return this.getPriceChange7D();
+
+		return 0;
 	}
 
 	public getPriceChange1H()
@@ -149,17 +177,17 @@ export class Listing extends Serializable
 		}
 	}
 
-	public getColor()
+	public getColor(time)
 	{
-		if(Number(this.percent_change_24h) < 0)
+		if(Number(this.getPercentChange(time)) < 0)
 			return 'danger';
 		else
 			return 'success';
 	}
 
-	public getDirection()
+	public getDirection(time)
 	{
-		if(Number(this.percent_change_24h) < 0)
+		if(Number(this.getPercentChange(time)) < 0)
 			return 'down';
 		else
 			return 'up';
