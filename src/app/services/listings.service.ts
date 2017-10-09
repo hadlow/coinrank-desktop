@@ -16,48 +16,37 @@ export class ListingsService
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
-	loadIndex()
+	loadIndex(convert)
 	{
-		return this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/index.json?request=' + this.getRandomInt(1000000, 9999999)).map(
-			(response: Response) => {
-				var listings = [];
-				const data = response.json();
-
-				var global = data['global'];
-				const ticker = data['ticker'];
-
-				for(let listing of ticker)
-				{
-					listing.volume_usd = listing['24h_volume_usd'];
-					const listingObj = new Listing(global).fromJSON(listing);
-
-					listings.push(listingObj);
-				}
-
-				return [global, listings];
-			}
-		);
+		return this.load('index', convert);
 	}
 
-	loadTicker()
+	loadTicker(convert)
 	{
-		return this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/ticker.json?request=' + this.getRandomInt(1000000, 9999999)).map(
+		return this.load('ticker', convert);
+	}
+
+	private load(type, convert)
+	{
+		return this.http.get('https://s3-us-west-1.amazonaws.com/coinrank/api/' + type + '.json?request=' + this.getRandomInt(1000000, 9999999)).map(
 			(response: Response) => {
 				var listings = [];
 				const data = response.json();
+				//console.log(data);
 
 				var global = data['global'];
-				const ticker = data['ticker'];
+				var ticker = data['ticker'];
+				var currencies = data['currencies'];
 
 				for(let listing of ticker)
 				{
 					listing.volume_usd = listing['24h_volume_usd'];
-					const listingObj = new Listing(global).fromJSON(listing);
+					const listingObj = new Listing(global, currencies[convert]).fromJSON(listing);
 
 					listings.push(listingObj);
 				}
 
-				return [global, listings];
+				return [global, listings, currencies];
 			}
 		);
 	}

@@ -96,8 +96,8 @@
 							</div>
 
 							<div class="col-sm-6 text-right pt-1 pb-1">
-								<span class="small uppercase">Total Market Cap: {{ global.total_market_cap_usd | currency:'USD':true:'1.0-0' }}</span>
-								<span class="small uppercase ml-1">Total 24H Volume: {{ global.total_24h_volume_usd | currency:'USD':true:'1.0-0' }}</span>
+								<span class="small uppercase">Total Market Cap: {{ global.total_market_cap_usd | currency:settings[1]:true:'1.0-0' }}</span>
+								<span class="small uppercase ml-1">Total 24H Volume: {{ global.total_24h_volume_usd | currency:settings[1]:true:'1.0-0' }}</span>
 							</div>
 						</div>
 					</div>
@@ -134,11 +134,11 @@
 
 										<div class="favorite active" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
 									</td>
-									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:'USD':true:'1.2-2' }})</span></p></td>
-									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
-									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:settings[1]:true:'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPrice() | currency:settings[1]:true:'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCap() | currency:settings[1]:true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolume() | currency:settings[1]:true:'1.0-0' }}</td>
 									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
@@ -159,11 +159,11 @@
 
 										<div class="favorite" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
 									</td>
-									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:'USD':true:'1.2-2' }})</span></p></td>
-									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPriceUsd() | currency:'USD':true:'1.2-5' }}</span></td>
-									<td class="text-right d-none d-md-table-cell open-hide"><p class="mt-0 mb-0">{{ listing.getMarketCapUsd() | currency:'USD':true:'1.0-0' }}</p><p class="mt-0 mb-0 text-{{ listing.getColor(settings[0]) }}"></p></td>
+									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:settings[1]:true:'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPrice() | currency:settings[1]:true:'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide"><p class="mt-0 mb-0">{{ listing.getMarketCap() | currency:settings[1]:true:'1.0-0' }}</p><p class="mt-0 mb-0 text-{{ listing.getColor(settings[0]) }}"></p></td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
-									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolumUsd() | currency:'USD':true:'1.0-0' }}</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolume() | currency:settings[1]:true:'1.0-0' }}</td>
 									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
@@ -209,13 +209,16 @@
 						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
 						<p class="mt-2 mb-0 text-uppercase small">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
 						<p *ngIf="viewing?.getTotalSupply() != 0" class="mt-0 mb-0 text-uppercase small">Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
+						<p class="mt-0 mb-0 text-uppercase small">Volume (24h): {{ viewing?.getVolume() | currency:settings[1]:true:'1.0-0' }}</p>
 						<p *ngIf="detailed?.info.ico_status == 'Ongoing' || detailed?.info.ico_status == 'Finished'" class="mt-0 mb-0 text-uppercase"><span class="badge badge-primary">ICO {{ detailed?.info.ico_status }}</span></p>
 					</div>
 
 					<div class="col-sm-4 text-right">
-						<h1 class="mt-0 mb-0">{{ viewing?.getPriceUsd() | currency:'USD':true:'1.2-5' }}</h1>
-						<p class="mt-0 mb-0 text-{{ viewing?.getColor(settings[0]) }}">{{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:'USD':true:'1.2-2' }})</span></p>
-						<p class="mt-0 mb-0 text-uppercase small">Volume (24h): {{ viewing?.getVolumUsd() | currency:'USD':true:'1.0-0' }}</p>
+						<h1 class="mt-0 mb-0">{{ viewing?.getPrice() | currency:settings[1]:true:'1.2-5' }}</h1>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('1h') }}">1H {{ viewing?.getPercentChange1H() }}%<span> ({{ viewing?.getPriceChange1H() | currency:settings[1]:true:'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('24h') }}">24H {{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:settings[1]:true:'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('7d') }}">7D {{ viewing?.getPercentChange7D() }}%<span> ({{ viewing?.getPriceChange7D() | currency:settings[1]:true:'1.2-2' }})</span></p>
+						
 					</div>
 				</div>
 			</div>
