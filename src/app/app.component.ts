@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 
 declare var jQuery: any;
@@ -55,7 +54,9 @@ export class AppComponent
 
 	private listing_loading = true;
 
-	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
+	private conversion_rates = [];
+
+	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService)
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
@@ -73,15 +74,27 @@ export class AppComponent
 
 	private loadData()
 	{
-		this.listingsService.loadIndex().subscribe(
+		this.listingsService.loadIndex(this.settings[1]).subscribe(
 			(data: any[]) => {
 				this.global = data[0];
 				this.listings = data[1];
+				this.conversion_rates = data[2];
+
+				console.log(data);
 
 				this.initListings();
 				this.loadTicker();
 			}
 		);
+	}
+
+	private getListing(symbol)
+	{
+		for(let listing of this.listings)
+		{
+			if(listing.getSymbol() == symbol)
+				return listing;
+		}
 	}
 
 	private initListings()
@@ -93,11 +106,11 @@ export class AppComponent
 
 	private loadTicker()
 	{
-		this.listingsService.loadTicker().subscribe(
+		this.listingsService.loadTicker(this.settings[1]).subscribe(
 			(data: any[]) => {
 				this.global = data[0];
 				this.listings = data[1];
-				console.log(this.listings);
+				this.conversion_rates = data[2];
 
 				this.initListings();
 			}
@@ -152,6 +165,21 @@ export class AppComponent
 
 		this.shown_listings = listings;
 		this.sortListings();
+	}
+
+	private convert(value)
+	{
+		return value * this.conversion_rates[this.settings[1]];
+	}
+
+	formatLargeNumber(value)
+	{
+		if(value < 10000)
+			return value;
+		else if(value < 1000000)
+			return (value / 1000) + 'k';
+		else
+			return (value / 1000000) + 'm';
 	}
 
 	filterActive(type, filter)
@@ -287,32 +315,59 @@ export class AppComponent
 				"valueField": "price",
 				"lineColor": "#23c493",
 				"graphLineAlpha": 0,
-				"balloonText": "<div style='margin:5px; font-size:12px;'>$<b>[[value]]</b></div>"
+				"conversion_rate": this.conversion_rates[this.settings[1]],
+				"currency": this.settings[1],
+				"balloonFunction": function(graphDataItem, graph)
+				{
+					var value = graphDataItem.values.value;
+					return "<div style='margin:5px; font-size:12px;'><b>" + (value * graph.conversion_rate).toFixed(3).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</b>" + graph.currency + "</div>";
+				}
 			}, {
 				"valueAxis": "v2",
 				"fillAlphas": 0.4,
 				"valueField": "volume",
 				"lineColor": "#BBB",
 				"graphLineAlpha": 0,
-				"balloonText": "<div style='margin:5px; font-size:12px;'>$<b>[[value]]</b></div>"
+				"conversion_rate": this.conversion_rates[this.settings[1]],
+				"currency": this.settings[1],
+				"balloonFunction": function(graphDataItem, graph)
+				{
+					var value = graphDataItem.values.value;
+					return "<div style='margin:5px; font-size:12px;'><b>" + (value * graph.conversion_rate).toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "</b>" + graph.currency + "</div>";
+				}
 			}],
 			"valueAxes": [{
 				"id": "v1",
 				"logarithmic": this.chart_logarithmic,
 				"axisAlpha": 0,
 				"labelsEnabled": true,
-				"title": "Price",
+				"title": "Price (" + this.settings[1] + ")",
 				"position": "left",
-				"gridThickness": 0
+				"gridThickness": 0,
+				"conversion_rate": this.conversion_rates[this.settings[1]],
+				"labelFunction": function(value)
+				{
+					return Math.round(value * this.conversion_rate);
+				}
 			},
 			{
 				"id": "v2",
 				"logarithmic": this.chart_logarithmic,
 				"axisAlpha": 0,
 				"labelsEnabled": true,
-				"title": "Volume",
+				"title": "Volume (" + this.settings[1] + ")",
 				"position": "right",
-				"gridThickness": 0
+				"gridThickness": 0,
+				"conversion_rate": this.conversion_rates[this.settings[1]],
+				"labelFunction": function(value)
+				{
+					if(value < 10000)
+						return Math.round(value * this.conversion_rate);
+					else if(value < 1000000)
+						return Math.round((value * this.conversion_rate) / 1000) + 'k';
+					else
+						return Math.round((value * this.conversion_rate) / 1000000) + 'm';
+				}
 			}],
 			"chartCursor": {
 				"categoryBalloonDateFormat": "L:NNA, MMM D YYYY",

@@ -34,9 +34,12 @@ export class Listing extends Serializable
 
 	private random = 0;
 
-	constructor(global)
+	private conversion = 1;
+
+	constructor(global, conversion)
 	{
 		super();
+		this.conversion = conversion;
 		this.global = global;
 		this.getRandomInt(1000000, 9999999);
 	}
@@ -56,19 +59,19 @@ export class Listing extends Serializable
 		return Number(this.rank);
 	}
 
-	public getPriceUsd()
+	public getPrice()
 	{
-		return Number(this.price_usd);
+		return Number(this.convert(this.price_usd));
 	}
 
-	public getVolumUsd()
+	public getVolume()
 	{
-		return Number(this.volume_usd);
+		return Number(this.convert(this.volume_usd));
 	}
 
-	public getMarketCapUsd()
+	public getMarketCap()
 	{
-		return Number(this.market_cap_usd);
+		return Number(this.convert(this.market_cap_usd));
 	}
 
 	public getAvailableSupply()
@@ -126,17 +129,17 @@ export class Listing extends Serializable
 
 	public getPriceChange1H()
 	{
-		return (Number(this.percent_change_1h) / 100) * Number(this.price_usd);
+		return (Number(this.percent_change_1h) / 100) * Number(this.getPrice());
 	}
 
 	public getPriceChange24H()
 	{
-		return (Number(this.percent_change_24h) / 100) * Number(this.price_usd);
+		return (Number(this.percent_change_24h) / 100) * Number(this.getPrice());
 	}
 
 	public getPriceChange7D()
 	{
-		return (Number(this.percent_change_7d) / 100) * Number(this.price_usd);
+		return (Number(this.percent_change_7d) / 100) * Number(this.getPrice());
 	}
 
 	public getAlgorithm()
@@ -167,13 +170,13 @@ export class Listing extends Serializable
 				return this.getPercentChange(time);
 
 			case 'price':
-				return this.getPriceUsd();
+				return this.getPrice();
 
 			case 'market_cap':
-				return this.getMarketCapUsd();
+				return this.getMarketCap();
 
 			case '24h_volume':
-				return this.getVolumUsd();
+				return this.getVolume();
 		}
 	}
 
@@ -195,11 +198,16 @@ export class Listing extends Serializable
 
 	public getMarketShare(totalMarketCap)
 	{
-		return (Number(this.market_cap_usd) / this.global['total_market_cap_usd']) * 100;
+		return (Number(this.getMarketCap()) / this.convert(this.global['total_market_cap_usd'])) * 100;
 	}
 
 	private getRandomInt(min, max)
 	{
 		this.random = Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	private convert(value)
+	{
+		return value * this.conversion;
 	}
 }

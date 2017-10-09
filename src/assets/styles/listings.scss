@@ -33,9 +33,16 @@
 			}
 		}
 	}
-	  
-	tbody tr:hover, tbody tr.active {
-		background: #FFF;
+
+	tbody {
+		td:first-child {
+			position: relative;
+			width: 220px;
+		}
+
+		tr:hover, tr.active {
+			background: #FFF;
+		}
 	}
 
 	.name {
@@ -44,6 +51,7 @@
 		margin-top: 2px;
 		white-space: nowrap;
 		overflow: hidden;
+		width: 131px;
 	}
 
 	.icon {
@@ -100,8 +108,7 @@
 .opened {
 	.listings {
 		.name {
-			padding-left: 10px;
-			width: 122px;
+			width: 142px;
 		}
 
 		.table th:first-child, .table td:first-child {
@@ -117,7 +124,7 @@
 @include media-breakpoint-down(sm) {
 	.listings {
 		.name {
-			padding-left: 6px;
+			width: 142px;
 		}
 		
 		.table th:first-child, .table td:first-child {
