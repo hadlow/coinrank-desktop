@@ -202,7 +202,7 @@
 
 			<div class="heading">
 				<div class="row no-gutters">
-					<div class="col-sm-8">
+					<div class="col-sm-6">
 						<img *ngIf="viewing" src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ viewing?.getSymbol() }}.png" class="pull-left mr-2 mt-1" />
 						
 						<h2 class="mt-0 mb-0">{{ viewing?.getName() }}</h2>
@@ -213,12 +213,23 @@
 						<p *ngIf="detailed?.info.ico_status == 'Ongoing' || detailed?.info.ico_status == 'Finished'" class="mt-0 mb-0 text-uppercase"><span class="badge badge-primary">ICO {{ detailed?.info.ico_status }}</span></p>
 					</div>
 
-					<div class="col-sm-4 text-right">
-						<h1 class="mt-0 mb-0">{{ viewing?.getPrice() | currency:settings[1]:true:'1.2-5' }}</h1>
-						<p class="mt-0 mb-0 text-{{ viewing?.getColor('1h') }}">1H {{ viewing?.getPercentChange1H() }}%<span> ({{ viewing?.getPriceChange1H() | currency:settings[1]:true:'1.2-2' }})</span></p>
-						<p class="mt-0 mb-0 text-{{ viewing?.getColor('24h') }}">24H {{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:settings[1]:true:'1.2-2' }})</span></p>
-						<p class="mt-0 mb-0 text-{{ viewing?.getColor('7d') }}">7D {{ viewing?.getPercentChange7D() }}%<span> ({{ viewing?.getPriceChange7D() | currency:settings[1]:true:'1.2-2' }})</span></p>
-						
+					<div class="col-sm-6 text-right">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="pull-right text-right">
+									<h1 class="mt-0 mb-0">{{ viewing?.getPrice() | currency:settings[1]:true:'1.2-5' }}</h1>
+								</div>
+
+								<div class="pull-right text-right mr-2">
+									<p class="mt-0 mb-0 badge badge-primary">{{ viewing?.getPriceUsd() * conversion_rates.BTC | number:'1.1-8' }} BTC</p>
+									<p class="mt-0 mb-0 badge badge-primary d-block">{{ viewing?.getPriceUsd() * conversion_rates.ETH | number:'1.1-6' }} ETH</p>
+								</div>
+							</div>
+						</div>
+
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('1h') }}"><span class="mt-0 mb-0 badge badge-light">1H</span> {{ viewing?.getPercentChange1H() }}%<span> ({{ viewing?.getPriceChange1H() | currency:settings[1]:true:'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('24h') }}"><span class="mt-0 mb-0 badge badge-light">24H</span> {{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:settings[1]:true:'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('7d') }}"><span class="mt-0 mb-0 badge badge-light">7D</span> {{ viewing?.getPercentChange7D() }}%<span> ({{ viewing?.getPriceChange7D() | currency:settings[1]:true:'1.2-2' }})</span></p>
 					</div>
 				</div>
 			</div>
