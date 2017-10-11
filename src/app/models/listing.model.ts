@@ -59,6 +59,11 @@ export class Listing extends Serializable
 		return Number(this.rank);
 	}
 
+	public getPriceUsd()
+	{
+		return this.price_usd;
+	}
+
 	public getPrice()
 	{
 		return Number(this.convert(this.price_usd));
