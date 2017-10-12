@@ -17,6 +17,16 @@
     min-width: 100% !important;
 }
 
+.btn-outline-dark.filter:hover {
+    background: none;
+    color: $dark;
+}
+
+.btn-outline-dark.filter.active:hover {
+    background: $dark;
+    color: $white;
+}
+
 .dark {
     background: #25272b;
     color: $gray-200;
@@ -47,6 +57,16 @@
 
     .btn-outline-dark {
         @include button-outline-variant($light, $dark);
+    }
+
+    .btn-outline-dark.filter:hover {
+        background: $dark;
+        color: $white;
+    }
+    
+    .btn-outline-dark.filter.active:hover {
+        background: $white;
+        color: $dark;
     }
 
     .badge-primary {
