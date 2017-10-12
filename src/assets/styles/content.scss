@@ -24,7 +24,7 @@
 	}
 
 	&.loading {
-		overflow: hidden;
+		overflow: hidden !important;
 		
 		.loading {
 			display: block;
