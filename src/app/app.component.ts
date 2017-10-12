@@ -80,8 +80,6 @@ export class AppComponent
 				this.listings = data[1];
 				this.conversion_rates = data[2];
 
-				console.log(data);
-
 				this.initListings();
 				this.loadTicker();
 			}

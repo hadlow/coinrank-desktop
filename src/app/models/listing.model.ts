@@ -159,7 +159,7 @@ export class Listing extends Serializable
 
 	public getPremined()
 	{
-		return this.premined;
+		return this.premined.toString();
 	}
 
 	public getChart()
