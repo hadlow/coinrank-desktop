@@ -61,7 +61,7 @@ export class SettingsComponent
 
 	onFormSubmit(form: NgForm)
 	{
-		this.settings = [form.value.change_period, form.value.currency, this.settings[2], form.value.limit];
+		this.settings = [form.value.change_period, form.value.currency, this.settings[2], this.settings[3]];
 
 		this.settingsService.setSettings(this.settings);
 

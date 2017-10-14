@@ -164,7 +164,7 @@ export class Listing extends Serializable
 
 	public getChart()
 	{
-		return 'https://s3-us-west-1.amazonaws.com/coinrank/charts/' + this.getSymbol() + '.png?request=' + this.random;
+		return 'https://s3-us-west-1.amazonaws.com/coinrank/charts/' + this.getSymbol() + '.svg?request=' + this.random;
 	}
 
 	public getValue(type, time = '24h')

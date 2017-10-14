@@ -32,18 +32,40 @@
 									</select>
 								</div>
 
-								<div class="form-group">
-									<label>Theme</label>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>Theme</label>
 
-									<div>
-										<div class="btn-group" data-toggle="buttons">
-											<label class="btn btn-primary" [ngClass]="{'active': settings[2] == 'light'}" (click)="settings[2] = 'light'">
-												<input type="radio" name="theme" autocomplete="off" value="light" [checked]="settings[2] == 'light'">Light
-											</label>
+											<div>
+												<div class="btn-group" data-toggle="buttons">
+													<label class="btn btn-primary" [ngClass]="{'active': settings[2] == 'light'}" (click)="settings[2] = 'light'">
+														<input type="radio" name="theme" autocomplete="off" value="light" [checked]="settings[2] == 'light'">Light
+													</label>
 
-											<label class="btn btn-primary" [ngClass]="{'active': settings[2] == 'dark'}" (click)="settings[2] = 'dark'">
-												<input type="radio" name="theme" autocomplete="off" value="dark" [checked]="settings[2] == 'dark'">Dark
-											</label>
+													<label class="btn btn-primary" [ngClass]="{'active': settings[2] == 'dark'}" (click)="settings[2] = 'dark'">
+														<input type="radio" name="theme" autocomplete="off" value="dark" [checked]="settings[2] == 'dark'">Dark
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>Auto refresh</label>
+
+											<div>
+												<div class="btn-group" data-toggle="buttons">
+													<label class="btn btn-primary" [ngClass]="{'active': settings[3] == 'on'}" (click)="settings[3] = 'on'">
+														<input type="radio" name="auto_refresh" autocomplete="off" value="on" [checked]="settings[3] == 'on'">On
+													</label>
+
+													<label class="btn btn-primary" [ngClass]="{'active': settings[3] == 'off'}" (click)="settings[3] = 'off'">
+														<input type="radio" name="auto_refresh" autocomplete="off" value="off" [checked]="settings[3] == 'off'">Off
+													</label>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
