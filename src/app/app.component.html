@@ -139,7 +139,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCap() | currency:settings[1]:true:'1.0-0' }}</td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolume() | currency:settings[1]:true:'1.0-0' }}</td>
-									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
+									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="252" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 							
@@ -164,7 +164,7 @@
 									<td class="text-right d-none d-md-table-cell open-hide"><p class="mt-0 mb-0">{{ listing.getMarketCap() | currency:settings[1]:true:'1.0-0' }}</p><p class="mt-0 mb-0 text-{{ listing.getColor(settings[0]) }}"></p></td>
 									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
 									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolume() | currency:settings[1]:true:'1.0-0' }}</td>
-									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="200" height="50" class="img-fluid chart" /></td>
+									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="252" height="50" class="img-fluid chart" /></td>
 								</tr>
 							</ng-container>
 						</tbody>

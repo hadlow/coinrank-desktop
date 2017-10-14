@@ -10,7 +10,7 @@ export class SettingsService
 		if(localStorage.getItem('settings') != null)
 			this.settings = JSON.parse(localStorage.getItem('settings'));
 		else
-			this.settings = ['24h', 'USD', 'light', '500'];
+			this.settings = ['24h', 'USD', 'light', 'on'];
 	}
 
 	setSettings(settings)

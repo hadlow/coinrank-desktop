@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 
 declare var jQuery: any;
@@ -44,6 +45,8 @@ export class AppComponent
 
 	private limit = 30;
 
+	private search = '';
+
 	private data = [];
 
 	private chart: AmChart;
@@ -62,6 +65,13 @@ export class AppComponent
 		this.loadData();
 		this.loadFavorites();
 		this.startTooltip();
+
+		if(this.settings[3] == 'on')
+		{
+			Observable.interval(1000 * 120).subscribe(x => {
+				this.updateTicker();
+			});
+		}
 	}
 
 	ngOnDestroy()
@@ -70,6 +80,22 @@ export class AppComponent
 		{
 			this.AmCharts.destroyChart(this.chart);
 		}
+	}
+
+	private getListing(symbol)
+	{
+		for(let listing of this.listings)
+		{
+			if(listing.getSymbol() == symbol)
+				return listing;
+		}
+	}
+
+	private initListings()
+	{
+		this.shown_listings = this.listings;
+		this.searched_listings = this.listings;
+		this.applyFilters();
 	}
 
 	private loadData()
@@ -86,22 +112,6 @@ export class AppComponent
 		);
 	}
 
-	private getListing(symbol)
-	{
-		for(let listing of this.listings)
-		{
-			if(listing.getSymbol() == symbol)
-				return listing;
-		}
-	}
-
-	private initListings()
-	{
-		this.shown_listings = this.listings;
-		this.searched_listings = this.listings;
-		this.sortListings();
-	}
-
 	private loadTicker()
 	{
 		this.listingsService.loadTicker(this.settings[1]).subscribe(
@@ -111,6 +121,21 @@ export class AppComponent
 				this.conversion_rates = data[2];
 
 				this.initListings();
+			}
+		);
+	}
+
+	private updateTicker()
+	{
+		this.listingsService.loadTicker(this.settings[1]).subscribe(
+			(data: any[]) => {
+				this.global = data[0];
+				this.listings = data[1];
+				this.conversion_rates = data[2];
+
+				this.shown_listings = this.listings;
+				this.onSearch(this.search);
+				this.applyFilters();
 			}
 		);
 	}
@@ -254,6 +279,7 @@ export class AppComponent
 	onSearch(search: string)
 	{
 		search = search.toLowerCase();
+		this.search = search;
 		this.searched_listings = [];
 
 		for(let listing of this.listings)
