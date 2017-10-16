@@ -58,6 +58,8 @@
 		min-height: 500px;
 
 		@include no-select();
+
+		a { display: none !important; }
 	}
 }
 

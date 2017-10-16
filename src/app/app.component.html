@@ -22,7 +22,28 @@
 					</div>
 				</div>
 
-				<div class="subheading">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-6 pt-2 pb-2">
+							<span class="mt-0 mb-0 text-uppercase small">Total Market Cap <strong>{{ global.total_market_cap_usd * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
+							<span class="mt-0 mb-0 text-uppercase small ml-2">Total 24H Volume <strong>{{ global.total_24h_volume_usd * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
+						</div>
+
+						<div class="col-sm-6">
+							<ul class="nav pull-right">
+								<li class="nav-item" hidden>
+									<a class="nav-link" href="#"><i class="fa fa-globe"></i> Market Overview</a>
+								</li>
+
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="collapse" href="#filter" aria-expanded="false" aria-controls="collapse"><i class="fa fa-filter"></i> Filter</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="collapse" id="filter">
 					<div class="container-fluid">
 						<div class="row pt-3 pb-2">
 							<div class="col-lg-3 open-fullwidth">
@@ -79,25 +100,6 @@
 										<input type="checkbox" checked autocomplete="off">Other
 									</label>
 								</div>
-							</div>
-						</div>
-
-						<div class="row d-none pt-3 pb-4">
-							<div class="col-sm-6">
-								<div class="btn-group btn-group-sm" data-toggle="buttons">
-									<label class="btn btn-primary active">
-										<input type="checkbox" autocomplete="off" checked>Currencies <span class="badge badge-secondary">{{ global.active_currencies }}</span>
-									</label>
-
-									<label class="btn btn-primary active">
-										<input type="checkbox" autocomplete="off" checked>Assets <span class="badge badge-secondary">{{ global.active_assets }}</span>
-									</label>
-								</div>
-							</div>
-
-							<div class="col-sm-6 text-right pt-1 pb-1">
-								<span class="small uppercase">Total Market Cap: {{ global.total_market_cap_usd | currency:settings[1]:true:'1.0-0' }}</span>
-								<span class="small uppercase ml-1">Total 24H Volume: {{ global.total_24h_volume_usd | currency:settings[1]:true:'1.0-0' }}</span>
 							</div>
 						</div>
 					</div>
@@ -293,3 +295,5 @@
 </div>
 
 <app-settings></app-settings>
+
+<app-market></app-market>

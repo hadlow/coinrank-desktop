@@ -59,6 +59,8 @@ export class AppComponent
 
 	private conversion_rates = [];
 
+	private show_filters = false;
+
 	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService)
 	{
 		this.settings = this.settingsService.getSettings();
@@ -160,6 +162,7 @@ export class AppComponent
 	{
 		var show = true;
 		var default_algorithms = ['SHA256', 'Scrypt', 'X11', 'CryptoNight', 'Ethash'];
+		var default_proof = ['PoW', 'PoS'];
 		var listings = [];
 
 		for(let listing of this.searched_listings)
@@ -174,16 +177,22 @@ export class AppComponent
 			if(this.filter[2].indexOf('other') != -1 && default_algorithms.indexOf(listing.getAlgorithm()) == -1)
 				show = true;
 
-			// If premined option is in premined array
-			if(this.filter[0].indexOf(listing.getPremined()) == -1)
-				show = false;
-
 			// If proof option is in proof array
 			if(this.filter[1].indexOf(listing.getProof()) == -1)
 				show = false;
 
+			// Is other active and not a default algorithm
+			if(this.filter[1].indexOf('N/A') != -1 && default_proof.indexOf(listing.getProof()) == -1)
+				show = true;
+
+			// If premined option is in premined array
+			if(this.filter[0].indexOf(listing.getPremined()) == -1)
+				show = false;
+
 			if(show)
 				listings.push(listing);
+			else
+				console.log(listing);
 		}
 
 		this.shown_listings = listings;

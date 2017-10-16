@@ -12,6 +12,10 @@
     display: none !important;
 }
 
+.opened .open-show {
+    display: block !important;
+}
+
 .opened .open-fullwidth {
     width: 100% !important;
     min-width: 100% !important;
