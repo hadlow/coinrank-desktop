@@ -25,8 +25,8 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-sm-6 pt-2 pb-2">
-							<span class="mt-0 mb-0 text-uppercase small">Total Market Cap <strong>{{ global.total_market_cap_usd * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
-							<span class="mt-0 mb-0 text-uppercase small ml-2">Total 24H Volume <strong>{{ global.total_24h_volume_usd * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
+							<span class="mt-0 mb-0 text-uppercase small">Total Market Cap <strong>{{ global['total_market_cap_usd'] * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
+							<span class="mt-0 mb-0 text-uppercase small ml-2">Total 24H Volume <strong>{{ global['total_24h_volume_usd'] * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
 						</div>
 
 						<div class="col-sm-6">
@@ -223,8 +223,8 @@
 								</div>
 
 								<div class="pull-right text-right mr-2">
-									<p class="mt-0 mb-0 badge badge-primary">{{ viewing?.getPriceUsd() * conversion_rates.BTC | number:'1.1-8' }} BTC</p>
-									<p class="mt-0 mb-0 badge badge-primary d-block">{{ viewing?.getPriceUsd() * conversion_rates.ETH | number:'1.1-6' }} ETH</p>
+									<p class="mt-0 mb-0 badge badge-primary">{{ viewing?.getPriceUsd() * conversion_rates['BTC'] | number:'1.1-8' }} BTC</p>
+									<p class="mt-0 mb-0 badge badge-primary d-block">{{ viewing?.getPriceUsd() * conversion_rates['ETH'] | number:'1.1-6' }} ETH</p>
 								</div>
 							</div>
 						</div>

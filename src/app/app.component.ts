@@ -17,49 +17,49 @@ import { SettingsService } from './services/settings.service';
 
 export class AppComponent
 {
-	private listings: Listing[] = [];
+	listings: Listing[] = [];
 
-	private searched_listings: Listing[] = [];
+	searched_listings: Listing[] = [];
 
-	private filtered_listings: Listing[] = [];
+	filtered_listings: Listing[] = [];
 
-	private shown_listings: Listing[] = [];
+	shown_listings: Listing[] = [];
 
-	private favorites: string[] = [];
+	favorites: string[] = [];
 
-	private settings;
+	settings;
 
-	private global = [];
+	global = [];
 
-	private opened: boolean = false;
+	opened: boolean = false;
 
-	private viewing: Listing;
+	viewing: Listing;
 
-	private detailed = null;
+	detailed = null;
 
-	private sort = 'market_cap';
+	sort = 'market_cap';
 
-	private sort_direction = 'down';
+	sort_direction = 'down';
 
-	private filter = [['0', '1'], ['PoW', 'PoS', 'N/A'], ['SHA256', 'Scrypt', 'X11', 'CryptoNight', 'Ethash', 'other']];
+	filter = [['0', '1'], ['PoW', 'PoS', 'N/A'], ['SHA256', 'Scrypt', 'X11', 'CryptoNight', 'Ethash', 'other']];
 
-	private limit = 30;
+	limit = 30;
 
-	private search = '';
+	search = '';
 
-	private data = [];
+	data = [];
 
-	private chart: AmChart;
+	chart: AmChart;
 
-	private chart_time = '1month';
+	chart_time = '1month';
 
-	private chart_logarithmic = false;
+	chart_logarithmic = false;
 
-	private listing_loading = true;
+	listing_loading = true;
 
-	private conversion_rates = [];
+	conversion_rates = [];
 
-	private show_filters = false;
+	show_filters = false;
 
 	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService)
 	{
@@ -84,7 +84,7 @@ export class AppComponent
 		}
 	}
 
-	private getListing(symbol)
+	getListing(symbol)
 	{
 		for(let listing of this.listings)
 		{
@@ -93,14 +93,14 @@ export class AppComponent
 		}
 	}
 
-	private initListings()
+	initListings()
 	{
 		this.shown_listings = this.listings;
 		this.searched_listings = this.listings;
 		this.applyFilters();
 	}
 
-	private loadData()
+	loadData()
 	{
 		this.listingsService.loadIndex(this.settings[1]).subscribe(
 			(data: any[]) => {
@@ -114,7 +114,7 @@ export class AppComponent
 		);
 	}
 
-	private loadTicker()
+	loadTicker()
 	{
 		this.listingsService.loadTicker(this.settings[1]).subscribe(
 			(data: any[]) => {
@@ -127,7 +127,7 @@ export class AppComponent
 		);
 	}
 
-	private updateTicker()
+	updateTicker()
 	{
 		this.listingsService.loadTicker(this.settings[1]).subscribe(
 			(data: any[]) => {
@@ -142,7 +142,7 @@ export class AppComponent
 		);
 	}
 
-	private loadFavorites()
+	loadFavorites()
 	{
 		if(localStorage.getItem('favorites') != null)
 			this.favorites = JSON.parse(localStorage.getItem('favorites'));
@@ -150,7 +150,7 @@ export class AppComponent
 			this.favorites = [];
 	}
 
-	private startTooltip()
+	startTooltip()
 	{
 		jQuery(function()
 		{
@@ -158,7 +158,7 @@ export class AppComponent
 		});
 	}
 
-	private applyFilters()
+	applyFilters()
 	{
 		var show = true;
 		var default_algorithms = ['SHA256', 'Scrypt', 'X11', 'CryptoNight', 'Ethash'];
@@ -199,7 +199,7 @@ export class AppComponent
 		this.sortListings();
 	}
 
-	private convert(value)
+	convert(value)
 	{
 		return value * this.conversion_rates[this.settings[1]];
 	}
