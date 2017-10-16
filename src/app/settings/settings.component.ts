@@ -13,9 +13,9 @@ import { SettingsService } from "../services/settings.service";
 
 export class SettingsComponent
 {
-	private settings: string[];
+	settings: string[];
 
-	private currencies = [
+	currencies = [
 		["USD", "United States Dollars"],
 		["BTC", "Bitcoin"],
 		["ETH", "Ethereum"],
