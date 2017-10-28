@@ -4,7 +4,7 @@
 			<div class="col-sm-12">
 				<div class="header">
 					<div class="logo">
-						<img src="/assets/images/header-logo.png" />
+						<img src="/assets/images/logo-white.png" />
 					</div>
 					
 					<div class="search">
@@ -24,12 +24,12 @@
 
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-sm-6 pt-2 pb-2">
-							<span class="mt-0 mb-0 text-uppercase small">Total Market Cap <strong>{{ global['total_market_cap_usd'] * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
-							<span class="mt-0 mb-0 text-uppercase small ml-2">Total 24H Volume <strong>{{ global['total_24h_volume_usd'] * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
+						<div class="col-sm-8 pt-2 pb-2">
+							<span class="mt-0 mb-0 d-inline-block text-uppercase small mr-2">Total Market Cap <strong>{{ global['total_market_cap_usd'] * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
+							<span class="mt-0 mb-0 d-inline-block text-uppercase small">Total 24H Volume <strong>{{ global['total_24h_volume_usd'] * conversion_rates[settings[1]] | currency:settings[1]:true:'1.0-0' }}</strong></span>
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<ul class="nav pull-right">
 								<li class="nav-item" hidden>
 									<a class="nav-link" href="#"><i class="fa fa-globe"></i> Market Overview</a>
@@ -183,20 +183,21 @@
 	</div>
 
 	<div class="content" [ngClass]="{'loading': listing_loading}">
-		<div class="loading"><img src="/assets/images/loading-logo.png" /></div>
+		<div class="loading"><img src="/assets/images/logo-dark.png" height="42" /></div>
 		
 		<div class="container-fluid">
 			<div class="options">
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-12" style="margin-top:-2px">
 						<div class="btn-group btn-group-sm" role="group">
-							<a href="{{ detailed?.info.website }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="{{ detailed?.info.website }}"><i class="fa fa-external-link"></i></a>
-							<a href="http://www.twitter.com/{{ detailed?.info.twitter }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="{{ detailed?.info.twitter }}"><i class="fa fa-twitter"></i></a>
+							<a href="{{ detailed?.info.website }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Visit website"><i class="fa fa-external-link"></i></a>
+							<a *ngIf="detailed?.info.twitter != ''" href="http://www.twitter.com/{{ detailed?.info.twitter }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></a>
+							<a *ngIf="detailed?.info.reddit != ''" href="http://www.reddit.com/r/{{ detailed?.info.reddit }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Reddit"><i class="fa fa-reddit"></i></a>
+							<a *ngIf="detailed?.info.github != ''" href="http://www.github.com/{{ detailed?.info.github }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Github"><i class="fa fa-github"></i></a>
+							<a *ngIf="detailed?.info.explorer != ''" href="{{ detailed?.info.explorer }}" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Explorer"><i class="fa fa-search"></i></a>
 							<button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Embed on your website"><i class="fa fa-code"></i></button>
 						</div>
-					</div>
 
-					<div class="col-sm-6">
 						<div class="back" (click)="onBackClick()"><i class="fa fa-times"></i></div>
 					</div>
 				</div>
@@ -207,7 +208,7 @@
 					<div class="col-sm-6">
 						<img *ngIf="viewing" src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ viewing?.getSymbol() }}.png" class="pull-left mr-2 mt-1" />
 						
-						<h2 class="mt-0 mb-0">{{ viewing?.getName() }}</h2>
+						<h2 class="mt-1 mb-0" style="line-height:18px">{{ viewing?.getName() }}</h2>
 						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
 						<p class="mt-2 mb-0 text-uppercase small">Circulation: {{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
 						<p *ngIf="viewing?.getTotalSupply() != 0" class="mt-0 mb-0 text-uppercase small">Max: {{ viewing?.getTotalSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</p>
@@ -267,23 +268,25 @@
 
 			<div class="markets mt-5">
 				<div class="row">
-					<div class="col-sm-6">
-						<h2>Markets</h2>
+					<div class="col-sm-12">
+						<h2>Global markets</h2>
 
 						<table class="table">
 							<thead>
 								<tr>
-									<th>From</th>
-									<th>To</th>
-									<th>Volume</th>
+									<th class="text-left">Currency</th>
+									<th class="text-left">Volume</th>
+									<th class="text-left">{{ settings[1] }} Equivalent</th>
+									<th class="text-left">Global share</th>
 								</tr>
 							</thead>
 		
 							<tbody>
 								<tr *ngFor="let market of detailed?.markets">
-									<td>{{ viewing?.getSymbol() }}</td>
 									<td>{{ market[0] }}</td>
-									<td>{{ market[1] | currency:'USD':true:'1.0-0' }}</td>
+									<td>{{ market[1] | number:'1.0-0' }} {{ viewing?.getSymbol() }}</td>
+									<td>{{ (market[1] * viewing?.getPrice()) | currency:settings[1]:'1.0-0' }}</td>
+									<td>{{ ((market[1] / total_volume) * 100) | number:'1.2-2' }}%</td>
 								</tr>
 							</tbody>
 						</table>

@@ -32,7 +32,6 @@ export class ListingsService
 			(response: Response) => {
 				var listings = [];
 				const data = response.json();
-				//console.log(data);
 
 				var global = data['global'];
 				var ticker = data['ticker'];

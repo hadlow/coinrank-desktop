@@ -61,6 +61,8 @@ export class AppComponent
 
 	show_filters = false;
 
+	total_volume = 0;
+
 	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService)
 	{
 		this.settings = this.settingsService.getSettings();
@@ -191,8 +193,6 @@ export class AppComponent
 
 			if(show)
 				listings.push(listing);
-			else
-				console.log(listing);
 		}
 
 		this.shown_listings = listings;
@@ -324,11 +324,15 @@ export class AppComponent
 		this.opened = true;
 		this.viewing = listing;
 		this.listing_loading = true;
+		this.total_volume = 0;
 
 		this.detailService.getDetail(listing.getSymbol()).subscribe(
 			(data: any[]) => {
 				this.detailed = data;
 				this.listing_loading = false;
+
+				for(let market of this.detailed.markets)
+					this.total_volume = this.total_volume + market[1];
 				
 				this.createChart();
 			}
