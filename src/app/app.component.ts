@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Rx';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 
@@ -63,7 +64,7 @@ export class AppComponent
 
 	total_volume = 0;
 
-	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService)
+	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
@@ -136,12 +137,28 @@ export class AppComponent
 				this.global = data[0];
 				this.listings = data[1];
 				this.conversion_rates = data[2];
+				this.updateViewing();
 
 				this.shown_listings = this.listings;
 				this.onSearch(this.search);
 				this.applyFilters();
 			}
 		);
+	}
+
+	updateViewing()
+	{
+		if(this.viewing)
+		{
+			for(let listing of this.listings)
+			{
+				if(listing.getSymbol() == this.viewing.getSymbol())
+				{
+					this.viewing = listing;
+					this.titleService.setTitle(listing.getPrice().toString() + ' / ' + listing.getSymbol() + ' - Coinrank');
+				}
+			}
+		}
 	}
 
 	loadFavorites()
@@ -330,6 +347,7 @@ export class AppComponent
 			(data: any[]) => {
 				this.detailed = data;
 				this.listing_loading = false;
+				this.titleService.setTitle(this.viewing.getPrice().toString() + ' / ' + this.viewing.getSymbol() + ' - Coinrank');
 
 				for(let market of this.detailed.markets)
 					this.total_volume = this.total_volume + market[1];
