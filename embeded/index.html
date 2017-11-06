@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<title>Coinrank</title>
+
+	<link href="style.css" rel="stylesheet" />
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108204305-2"></script>
+	<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-108204305-2');
+	</script>
+
+	<style>
+	.wrapper {
+
+	}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<img src="" icon /><h2 name></h2>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<a href="https://www.coinrank.xyz/source_w" target="_blank" class="text-uppercase small">&lt;Created by Coinrank&gt;</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+	function urlParams()
+	{
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		var query_string = {};
+
+		for(var i = 0; i < vars.length; i++)
+		{
+			var pair = vars[i].split("=");
+			
+			if(typeof query_string[pair[0]] === "undefined")
+			{
+				query_string[pair[0]] = decodeURIComponent(pair[1]);
+			} else if (typeof query_string[pair[0]] === "string") {
+				var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+
+				query_string[pair[0]] = arr;
+			} else {
+				query_string[pair[0]].push(decodeURIComponent(pair[1]));
+			}
+		}
+
+		return query_string;
+	}
+
+	function populateListing(listing)
+	{
+		$('[name]').text(listing.name);
+		$('[symbol]').text(listing.symbol);
+		$('[rank]').text(listing.rank);
+		$('[price_usd]').text(listing.price_usd);
+		$('[market_cap_usd]').text(listing.market_cap_usd);
+		$('[available_supply]').text(listing.available_supply);
+		$('[24h_volume_usd]').text(listing['24h_volume_usd']);
+		$('[percent_change_1h]').text(listing.percent_change_1h);
+		$('[percent_change_7d]').text(listing.percent_change_7d);
+		$('[percent_change_24h]').text(listing.percent_change_24h);
+		$('[symbol]').text(listing.symbol);
+	}
+
+	function getListing()
+	{
+		$.getJSON("https://s3-us-west-1.amazonaws.com/coinrank/api/ticker.json", function(data)
+		{
+			var ticker = data.ticker;
+			var params = urlParams();
+
+			for(var listing in ticker)
+			{
+				if(ticker[listing].symbol == params.coin)
+					populateListing(ticker[listing]);
+			}
+		});
+	}
+
+	function loadIcon()
+	{
+		var params = urlParams();
+		$('[icon]').attr('src', 'https://s3-us-west-1.amazonaws.com/coinrank/icons/' + params.coin + '.png');
+	}
+
+	function run()
+	{
+		loadIcon();
+		getListing();
+	}
+	
+	setInterval(function()
+	{
+		run();
+	}, 120000);
+
+	$(document).ready(function()
+	{
+		run();
+	});
+	</script>
+</body>
+</html>

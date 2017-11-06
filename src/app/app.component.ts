@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Rx';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
-
-declare var jQuery: any;
 
 import { Listing } from './models/listing.model';
 import { ListingsService } from './services/listings.service';
 import { DetailService } from './services/detail.service';
 import { SettingsService } from './services/settings.service';
 
+declare var jQuery: any;
+
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css']
+	styleUrls: ['./app.component.css'],
+	providers: [CurrencyPipe]
 })
 
 export class AppComponent
@@ -64,7 +66,15 @@ export class AppComponent
 
 	total_volume = 0;
 
-	constructor(private AmCharts: AmChartsService, private listingsService: ListingsService, private detailService: DetailService, private settingsService: SettingsService, private titleService: Title)
+	constructor
+	(
+		private AmCharts: AmChartsService,
+		private listingsService: ListingsService,
+		private detailService: DetailService,
+		private settingsService: SettingsService,
+		private titleService: Title,
+		private currencyPipe: CurrencyPipe
+	)
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
@@ -155,10 +165,16 @@ export class AppComponent
 				if(listing.getSymbol() == this.viewing.getSymbol())
 				{
 					this.viewing = listing;
-					this.titleService.setTitle(listing.getPrice().toString() + ' / ' + listing.getSymbol() + ' - Coinrank');
+					this.updateTitle(listing);
 				}
 			}
 		}
+	}
+
+	updateTitle(listing)
+	{
+		var price = this.currencyPipe.transform(listing.getPrice(), this.settings[1], true, '1.2-5');
+		this.titleService.setTitle(price + ' / ' + listing.getSymbol() + ' - Coinrank');
 	}
 
 	loadFavorites()
@@ -347,7 +363,7 @@ export class AppComponent
 			(data: any[]) => {
 				this.detailed = data;
 				this.listing_loading = false;
-				this.titleService.setTitle(this.viewing.getPrice().toString() + ' / ' + this.viewing.getSymbol() + ' - Coinrank');
+				this.updateTitle(this.viewing);
 
 				for(let market of this.detailed.markets)
 					this.total_volume = this.total_volume + market[1];
@@ -459,6 +475,7 @@ export class AppComponent
 	{
 		this.opened = false;
 		this.viewing = null;
+		this.titleService.setTitle('Coinrank');
 	}
 
 	ifActive(listing: Listing)
