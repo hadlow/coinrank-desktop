@@ -8,6 +8,8 @@ import { ListingsService } from './services/listings.service';
 import { SettingsService } from './services/settings.service';
 import { DetailService } from './services/detail.service';
 
+import { SafePipe } from './pipes/safe.pipe';
+
 import { AppComponent } from './app.component';
 import { SettingsComponent } from './settings/settings.component';
 import { FooterComponent } from './footer/footer.component';
@@ -15,6 +17,7 @@ import { MarketComponent } from './market/market.component';
 
 @NgModule({
 	declarations: [
+		SafePipe,
 		AppComponent,
 		SettingsComponent,
 		FooterComponent,
