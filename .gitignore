@@ -4,6 +4,8 @@
 /dist
 /tmp
 /out-tsc
+/Coinrank-dawin-x64
+*.app
 
 # dependencies
 /node_modules
