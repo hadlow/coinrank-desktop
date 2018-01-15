@@ -1,53 +1,85 @@
 $logo-width: 80px;
-$nav-width: 63px;
+$nav-width: 50px;
 
 .header {
-	border-bottom: 1px solid #DDD;
-	position: relative;
-	height: 65px;
+	background-color: $green;
+	color: $white;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 50;
+	height: $header-height;
+	-webkit-app-region: drag;
 
 	.btn {
-		border-radius: 0 !important;
 		box-shadow: none;
+		-webkit-app-region: no-drag;
 	}
 	
-	.logo {
-		position: absolute;
-		width: $logo-width;
-		height: 65px;
-		left: 0;
-		top: 0;
-		background: $green;
-		color: #FFF;
-		padding: 20px;
-		text-align: center;
-
-		img {
-			height: 25px;
-		}
-	}
-
     .search {
 		position: absolute;
 		top: 0;
 		left: 0;
 		right: 0;
 		width: 100%;
+		max-width: 600px;
 		padding-left: $logo-width;
 		padding-right: $nav-width;
 
         .form-control {
-            background: transparent;
+            background: darken($green, 3.5);
             border: none;
-            padding: $px20 $px24;
-            padding-right: 0;
+			padding: 0px $px20;
+			height: 31px;
+			padding-right: 0;
+			margin-top: 3px;
+			color: $white;
+
+			&::-webkit-input-placeholder {
+				color: $gray-100;
+			}
+
+			&::-moz-placeholder {
+				color: $gray-100;
+			}
+
+			&:-ms-input-placeholder {
+				color: $gray-100;
+			}
+
+			&:-moz-placeholder {
+				color: $gray-100;
+			}
         }
 
         .btn {
             border: none;
 			padding: $px20 $px24 !important;
         }
-    }
+	}
+	
+	.market {
+		position: absolute;
+		left: 580px;
+		top: 0;
+		padding-top: 8px;
+
+		p.heading {
+			line-height: 1;
+			opacity: 0.8;
+			font-size: 10px;
+			margin: 0;
+			text-transform: uppercase;
+		}
+
+		p.value {
+			line-height: 1;
+			font-size: 12px;
+			margin: 0;
+		}
+	}
 
     .nav {
 		position: absolute;
@@ -57,8 +89,8 @@ $nav-width: 63px;
 
         button.btn {
             border: none;
-			padding: $px20 $px24 !important;
-			border-left: 1px solid #ddd;
+			padding: 4px 12px !important;
+			margin-top: 3px;
 		}
 	}
 }

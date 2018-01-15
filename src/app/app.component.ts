@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Rx';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
+import { Observable } from 'rxjs/Rx';
+import { ElectronService } from 'ngx-electron';
 
 import { Listing } from './models/listing.model';
 import { ListingsService } from './services/listings.service';
@@ -73,7 +74,8 @@ export class AppComponent
 		private detailService: DetailService,
 		private settingsService: SettingsService,
 		private titleService: Title,
-		private currencyPipe: CurrencyPipe
+		private currencyPipe: CurrencyPipe,
+		private electronService: ElectronService
 	)
 	{
 		this.settings = this.settingsService.getSettings();
@@ -87,6 +89,24 @@ export class AppComponent
 				this.updateTicker();
 			});
 		}
+
+		if(this.electronService.isElectronApp)
+		{
+			if(this.electronService.process.platform.toString() === "dawin")
+			{
+				
+			}
+		}
+	}
+
+	openWebsite(url)
+	{
+		if(this.electronService.isElectronApp)
+		{
+			this.electronService.shell.openExternal(url);
+		}
+
+		return false;
 	}
 
 	ngOnDestroy()
@@ -173,7 +193,7 @@ export class AppComponent
 
 	updateTitle(listing)
 	{
-		var price = this.currencyPipe.transform(listing.getPrice(), this.settings[1], true, '1.2-5');
+		var price = this.currencyPipe.transform(listing.getPrice(), this.settings[1], 'symbol', '1.2-5');
 		this.titleService.setTitle(price + ' / ' + listing.getSymbol() + ' - Coinrank');
 	}
 

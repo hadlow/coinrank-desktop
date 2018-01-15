@@ -129,6 +129,10 @@ $enable-grid-classes:       true !default;
 $enable-print-styles:       true !default;
 
 
+// Layout
+$news-width:  300px;
+
+
 // Spacing
 //
 // Control the default styling of most Bootstrap elements by modifying these
@@ -307,12 +311,14 @@ $list-inline-padding: 5px !default;
 
 $mark-bg: #fcf8e3 !default;
 
+$header-height: 38px;
+
 
 // Tables
 //
 // Customizes the `.table` component with basic values, each used across all table variations.
 
-$table-cell-padding:            .75rem !default;
+$table-cell-padding:            .5rem !default;
 $table-cell-padding-sm:         .3rem !default;
 
 $table-bg:                      transparent !default;

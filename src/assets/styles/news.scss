@@ -1,0 +1,10 @@
+.news {
+    position: fixed;
+    width: $news-width;
+    background: #FFF;
+    top: 38px;
+    bottom: 0;
+    right: 0;
+    border-left: 2px solid #DDD;
+    z-index: 5;
+}

@@ -3,6 +3,7 @@
 @import "header";
 @import "listings";
 @import "content";
+@import "news";
 
 .opened {
     height: 100%;
@@ -86,10 +87,6 @@
 
     .header {
         border-bottom: 1px solid #000;
-
-        .nav button.btn {
-            border-left: 1px solid #000;
-        }
     }
 
     .listings {

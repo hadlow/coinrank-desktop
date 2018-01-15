@@ -1,0 +1,11 @@
+// Enable highlighting
+
+@mixin selectable() {
+	-webkit-touch-callout: inherit; /* iOS Safari */
+    -webkit-user-select: inherit; /* Safari */
+     -khtml-user-select: inherit; /* Konqueror HTML */
+       -moz-user-select: inherit; /* Firefox */
+        -ms-user-select: inherit; /* Internet Explorer/Edge */
+            user-select: inherit; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+  }
