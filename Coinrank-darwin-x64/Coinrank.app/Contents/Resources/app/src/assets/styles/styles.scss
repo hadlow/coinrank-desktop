@@ -1,0 +1,125 @@
+@import "bootstrap/bootstrap";
+
+@import "header";
+@import "listings";
+@import "content";
+
+.opened {
+    height: 100%;
+}
+
+.opened .open-hide {
+    display: none !important;
+}
+
+.opened .open-show {
+    display: block !important;
+}
+
+.opened .open-fullwidth {
+    width: 100% !important;
+    min-width: 100% !important;
+}
+
+.embed-frame {
+    border: 1px solid $gray-300;
+    width: 100%;
+    height: 200px;
+}
+
+.btn-outline-dark.filter:hover {
+    background: none;
+    color: $dark;
+}
+
+.btn-outline-dark.filter.active:hover {
+    background: $dark;
+    color: $white;
+}
+
+.dark {
+    background: #25272b;
+    color: $gray-200;
+
+    a {
+        color: $light;
+
+        &:hover {
+            color: $white;
+        }
+    }
+
+    .form-control {
+        color: $gray-200;
+    }
+
+    .btn-light {
+        @include button-variant($dark, $dark);
+    }
+
+    .btn-dark {
+        @include button-variant($light, $light);
+    }
+
+    .btn-outline-light {
+        @include button-outline-variant($dark, #FFF);
+    }
+
+    .btn-outline-dark {
+        @include button-outline-variant($light, $dark);
+    }
+
+    .btn-outline-dark.filter:hover {
+        background: $dark;
+        color: $white;
+    }
+    
+    .btn-outline-dark.filter.active:hover {
+        background: $white;
+        color: $dark;
+    }
+
+    .badge-primary {
+        color: #25272b;
+        background-color: $gray-200;
+    }
+
+    .header {
+        border-bottom: 1px solid #000;
+    }
+
+    .listings {
+        tr {
+            background: #25272b;
+
+            img.chart {
+                -webkit-filter: invert(1);
+                filter: invert(1);
+            }
+
+            &.highlighted {
+                background: #31353c;
+            }
+        }
+
+        tbody tr:hover, tbody tr.active {
+            background: #0f1113;
+        }
+
+        table thead th {
+            color: $gray-200;
+
+            .sort {
+                color: #FFF;
+            }
+        }
+    }
+
+    .content {
+        background: #0f1113;
+
+        .options .back:hover {
+            background: $dark;
+        }
+    }
+}

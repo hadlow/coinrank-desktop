@@ -1,0 +1,299 @@
+<div [ngClass]="{'opened': opened, 'dark': settings[2] == 'dark'}">
+	<div class="main">
+		<div class="row no-gutters">
+			<div class="col-sm-12">
+				<div class="header">
+					<div class="search">
+						<input type="text" class="form-control" placeholder="Search" autofocus (keyup)="onSearch($event.target.value)" />
+					</div>
+
+					<div class="nav">
+						<button class="btn btn-success btn-lg" type="button" data-toggle="modal" data-target="#settings"><i class="fa fa-cog"></i></button>
+					</div>
+				</div>
+
+				<!--
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-8 pt-2 pb-2">
+							<span class="mt-0 mb-0 d-inline-block text-uppercase small mr-2">Total Market Cap <strong>{{ global['total_market_cap_usd'] * conversion_rates[settings[1]] | currency:settings[1]:'symbol':'1.0-0' }}</strong></span>
+							<span class="mt-0 mb-0 d-inline-block text-uppercase small">Total 24H Volume <strong>{{ global['total_24h_volume_usd'] * conversion_rates[settings[1]] | currency:settings[1]:'symbol':'1.0-0' }}</strong></span>
+						</div>
+
+						<div class="col-sm-4">
+							<ul class="nav pull-right">
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="collapse" href="#filter" aria-expanded="false" aria-controls="collapse"><i class="fa fa-filter"></i> Filter</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				-->
+
+				<div class="collapse" id="filter">
+					<div class="container-fluid">
+						<div class="row pt-3 pb-2">
+							<div class="col-lg-3 open-fullwidth">
+								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('0', '0')">
+										<input type="checkbox" checked autocomplete="off">Mined
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('0', '1')">
+										<input type="checkbox" checked autocomplete="off">Pre-mined
+									</label>
+								</div>
+							</div>
+
+							<div class="col-lg-3 open-fullwidth">
+								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('1', 'PoW')">
+										<input type="checkbox" checked autocomplete="off">PoW
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('1', 'PoS')">
+										<input type="checkbox" checked autocomplete="off">PoS
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('1', 'N/A')">
+										<input type="checkbox" checked autocomplete="off">N/A
+									</label>
+								</div>
+							</div>
+
+							<div class="col-lg-6 open-fullwidth">
+								<div class="btn-group btn-group-sm btn-group-justified" data-toggle="buttons">
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('2', 'SHA256')">
+										<input type="checkbox" checked autocomplete="off">SHA256
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('2', 'Scrypt')">
+										<input type="checkbox" checked autocomplete="off">Scrypt
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('2', 'X11')">
+										<input type="checkbox" checked autocomplete="off">X11
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('2', 'CryptoNight')">
+										<input type="checkbox" checked autocomplete="off">CryptoNight
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('2', 'Ethash')">
+										<input type="checkbox" checked autocomplete="off">Ethash
+									</label>
+
+									<label class="btn btn-outline-dark filter active" (click)="filterListings('2', 'other')">
+										<input type="checkbox" checked autocomplete="off">Other
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="listings">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								
+								<th (click)="onSortClick('change')">
+									<span [ngClass]="sort == 'change' ? 'sort ' + sort_direction : ''">{{ settings[0] }} Change</span>
+								</th>
+								
+								<th (click)="onSortClick('price')">
+									<span [ngClass]="sort == 'price' ? 'sort ' + sort_direction : ''">Price</span>
+								</th>
+								
+								<th (click)="onSortClick('market_cap')" class="d-none d-md-table-cell open-hide">
+									<span [ngClass]="sort == 'market_cap' ? 'sort ' + sort_direction : ''">Market Cap</span>
+								</th>
+								
+								<th class="d-none d-xl-table-cell open-hide">Market Share</th>
+
+								<th (click)="onSortClick('24h_volume')" class="d-none d-lg-table-cell open-hide">
+									<span [ngClass]="sort == '24h_volume' ? 'sort ' + sort_direction : ''">24H Volume</span>
+								</th>
+
+								<th class="d-none d-sm-table-cell open-hide">7 Day Chart</th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<ng-container *ngFor="let listing of shown_listings">
+								<tr *ngIf="favorites.indexOf(listing.getSymbol()) > -1" (click)="onListingClick(listing)" class="highlighted" [ngClass]="{'active': ifActive(listing)}">
+									<td>
+										<div class="icon">
+											<img src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ listing.getSymbol() }}.png" class="img-fluid" />
+
+											<div class="badge badge-primary">{{ listing.getRank() }}</div>
+										</div>
+
+										<div class="name">
+											<h4 class="mb-0">{{ listing.getName() }}</h4>
+											<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
+										</div>
+
+										<div class="favorite active" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
+									</td>
+									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:settings[1]:'symbol':'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPrice() | currency:settings[1]:'symbol':'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide">{{ listing.getMarketCap() | currency:settings[1]:'symbol':'1.0-0' }}</td>
+									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolume() | currency:settings[1]:'symbol':'1.0-0' }}</td>
+									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="252" height="50" class="img-fluid chart" /></td>
+								</tr>
+							</ng-container>
+							
+							<ng-container *ngFor="let listing of shown_listings | slice:0:limit; let i=index">
+								<tr *ngIf="favorites.indexOf(listing.getSymbol()) < 0" (click)="onListingClick(listing)" [ngClass]="{'active': ifActive(listing)}">
+									<td>
+										<div class="icon">
+											<img src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ listing.getSymbol() }}.png" class="img-fluid" />
+
+											<div class="badge badge-primary">{{ listing.getRank() }}</div>
+										</div>
+
+										<div class="name">
+											<h4 class="mb-0">{{ listing.getName() }}</h4>
+											<h6 class="mb-0 font-weight-light">{{ listing.getAvailableSupply() | number:'1.0-0' }} {{ listing.getSymbol() }}</h6>
+										</div>
+
+										<div class="favorite" (click)="onFavoriteClick(listing); $event.stopPropagation()"></div>
+									</td>
+									<td class="text-center text-{{ listing.getColor(settings[0]) }} change"><p class="mt-0 mb-0"><i class="fa fa-arrow-{{ listing.getDirection(settings[0]) }}"></i></p><p class="mt-0 mb-0">{{ listing.getPercentChange(settings[0]) }}%<span> ({{ listing.getPriceChange(settings[0]) | currency:settings[1]:'symbol':'1.2-2' }})</span></p></td>
+									<td class="text-center"><span class="badge badge-{{ listing.getColor(settings[0]) }} price">{{ listing.getPrice() | currency:settings[1]:'symbol':'1.2-5' }}</span></td>
+									<td class="text-right d-none d-md-table-cell open-hide"><p class="mt-0 mb-0">{{ listing.getMarketCap() | currency:settings[1]:'symbol':'1.0-0' }}</p><p class="mt-0 mb-0 text-{{ listing.getColor(settings[0]) }}"></p></td>
+									<td class="text-center d-none d-xl-table-cell open-hide">{{ listing.getMarketShare() | number:'1.2-2' }}%</td>
+									<td class="text-right d-none d-lg-table-cell open-hide">{{ listing.getVolume() | currency:settings[1]:'symbol':'1.0-0' }}</td>
+									<td class="text-center d-none d-sm-table-cell open-hide image"><img src="{{ listing.getChart() }}" width="252" height="50" class="img-fluid chart" /></td>
+								</tr>
+							</ng-container>
+						</tbody>
+					</table>
+
+					<h3 *ngIf="listings?.length < 1" class="text-center">Loading coins</h3>
+
+					<div *ngIf="listings?.length > 0" class="text-center pb-5"><button class="btn btn-primary" (click)="limit = limit + 30"><i class="fa fa-caret-down"></i> Show More</button></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="content" [ngClass]="{'loading': listing_loading}">
+		<div class="loading"><img src="./assets/images/logo-dark.png" height="42" /></div>
+		
+		<div class="container-fluid">
+			<div class="options">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top:-2px">
+						<div class="btn-group btn-group-sm" role="group">
+							<button (click)="openWebsite(detailed?.info.website)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Visit website"><i class="fa fa-external-link"></i></button>
+							<button *ngIf="detailed?.info.twitter != ''" (click)="openWebsite('https://www.twitter.com/' + detailed?.info.twitter)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></button>
+							<button *ngIf="detailed?.info.reddit != ''" (click)="openWebsite('https://www.reddit.com/r/' + detailed?.info.reddit)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Reddit"><i class="fa fa-reddit"></i></button>
+							<button *ngIf="detailed?.info.github != ''" (click)="openWebsite('https://www.github.com/' + detailed?.info.github)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Github"><i class="fa fa-github"></i></button>
+							<button *ngIf="detailed?.info.explorer != ''" (click)="openWebsite(detailed?.info.explorer)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Explorer"><i class="fa fa-search"></i></button>
+						</div>
+
+						<div class="back" (click)="onBackClick()"><i class="fa fa-times"></i></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="heading">
+				<div class="row no-gutters">
+					<div class="col-sm-6">
+						<img *ngIf="viewing" src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ viewing?.getSymbol() }}.png" class="pull-left mr-2 mt-1" />
+						
+						<h2 class="mt-1 mb-0" style="line-height:18px">{{ viewing?.getName() }}</h2>
+						<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
+						<p class="mt-2 mb-0 text-uppercase small">Circulation: <strong>{{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</strong> / {{ (viewing?.getAvailableSupply() * viewing?.getPrice()) | currency:settings[1]:'symbol':'1.0-0' }}</p>
+						<p *ngIf="viewing?.getTotalSupply() != 0" class="mt-0 mb-0 text-uppercase small">Max: <strong>{{ viewing?.getTotalSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</strong> / {{ (viewing?.getTotalSupply() * viewing?.getPrice()) | currency:settings[1]:'symbol':'1.0-0' }}</p>
+						<p class="mt-0 mb-0 text-uppercase small">Volume (24h): <strong>{{ (viewing?.getVolume() / viewing?.getPrice()) | number:'1.0-0' }} {{ viewing?.getSymbol() }}</strong> / {{ viewing?.getVolume() | currency:settings[1]:'symbol':'1.0-0' }}</p>
+						<p *ngIf="detailed?.info.ico_status == 'Ongoing' || detailed?.info.ico_status == 'Finished'" class="mt-0 mb-0 text-uppercase"><span class="badge badge-primary">ICO {{ detailed?.info.ico_status }}</span></p>
+					</div>
+
+					<div class="col-sm-6 text-right">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="pull-right text-right">
+									<h1 class="mt-0 mb-0">{{ viewing?.getPrice() | currency:settings[1]:'symbol':'1.2-5' }}</h1>
+								</div>
+
+								<div class="pull-right text-right mr-2">
+									<p class="mt-0 mb-0 badge badge-primary">{{ viewing?.getPriceUsd() * conversion_rates['BTC'] | number:'1.1-8' }} BTC</p>
+									<p class="mt-0 mb-0 badge badge-primary d-block">{{ viewing?.getPriceUsd() * conversion_rates['ETH'] | number:'1.1-6' }} ETH</p>
+								</div>
+							</div>
+						</div>
+
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('1h') }}"><span class="mt-0 mb-0 badge badge-light">1H</span> {{ viewing?.getPercentChange1H() }}%<span> ({{ viewing?.getPriceChange1H() | currency:settings[1]:'symbol':'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('24h') }}"><span class="mt-0 mb-0 badge badge-light">24H</span> {{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:settings[1]:'symbol':'1.2-2' }})</span></p>
+						<p class="mt-0 mb-0 text-{{ viewing?.getColor('7d') }}"><span class="mt-0 mb-0 badge badge-light">7D</span> {{ viewing?.getPercentChange7D() }}%<span> ({{ viewing?.getPriceChange7D() | currency:settings[1]:'symbol':'1.2-2' }})</span></p>
+					</div>
+				</div>
+			</div>
+
+			<div class="chart mt-5">
+				<div class="row">
+					<div id="chartdiv" [style.width.%]="100" [style.height.px]="400"></div>
+				</div>
+
+				<div class="row">
+					<div class="col-sm-12 col-md-8 mt-3 ml-auto mr-auto">
+						<ul class="nav nav-pills nav-fill">
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1day'}" (click)="onChartClick('1day')">1 Day</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1month'}" (click)="onChartClick('1month')">1 Month</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '3month'}" (click)="onChartClick('3month')">3 Months</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1year'}" (click)="onChartClick('1year')">1 Year</span></li>
+
+							<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == 'all'}" (click)="onChartClick('all')">All</span></li>
+						</ul>
+					</div>
+
+					<div class="col-sm-12 col-md-8 mt-3 ml-auto mr-auto text-center">
+						<div class="btn-group btn-group-sm" role="group">
+							<button type="button" class="btn btn-dark" [ngClass]="{'active': !chart_logarithmic}" (click)="onLogarithmicClick(false)">Linear</button>
+							<button type="button" class="btn btn-dark" [ngClass]="{'active': chart_logarithmic}" (click)="onLogarithmicClick(true)">Logarithmic</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="markets mt-5">
+				<div class="row">
+					<div class="col-sm-12">
+						<h2>Global markets</h2>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th class="text-left">Currency</th>
+									<th class="text-left">Volume</th>
+									<th class="text-left">{{ settings[1] }} Equivalent</th>
+									<th class="text-left">Global share</th>
+								</tr>
+							</thead>
+		
+							<tbody>
+								<tr *ngFor="let market of detailed?.markets">
+									<td>{{ market[0] }}</td>
+									<td>{{ market[1] | number:'1.0-0' }} {{ viewing?.getSymbol() }}</td>
+									<td>{{ (market[1] * viewing?.getPrice()) | currency:settings[1]:'symbol':'1.0-0' }}</td>
+									<td>{{ ((market[1] / total_volume) * 100) | number:'1.2-2' }}%</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-settings></app-settings>
