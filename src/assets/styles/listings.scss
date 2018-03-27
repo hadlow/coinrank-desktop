@@ -1,4 +1,10 @@
 .listings {
+	position: fixed;
+    top: 38px;
+    bottom: 0;
+	right: $news-width;
+	left: 0;
+	
 	thead {
 		background: #FFF;
 		border-bottom: 1px solid #dcdcdc;

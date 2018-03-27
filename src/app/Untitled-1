@@ -1,0 +1,18 @@
+<!--
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-sm-8 pt-2 pb-2">
+							
+							<span class="mt-0 mb-0 d-inline-block text-uppercase small">Total 24H Volume <strong>{{ global['total_24h_volume_usd'] * conversion_rates[settings[1]] | currency:settings[1]:'symbol':'1.0-0' }}</strong></span>
+						</div>
+
+						<div class="col-sm-4">
+							<ul class="nav pull-right">
+								<li class="nav-item">
+									<a class="nav-link" data-toggle="collapse" href="#filter" aria-expanded="false" aria-controls="collapse"><i class="fa fa-filter"></i> Filter</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				-->

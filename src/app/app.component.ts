@@ -6,9 +6,12 @@ import { Observable } from 'rxjs/Rx';
 import { ElectronService } from 'ngx-electron';
 
 import { Listing } from './models/listing.model';
+import { Article } from './models/article.model';
+
 import { ListingsService } from './services/listings.service';
 import { DetailService } from './services/detail.service';
 import { SettingsService } from './services/settings.service';
+import { NewsService } from './services/news.service';
 
 declare var jQuery: any;
 
@@ -22,6 +25,8 @@ declare var jQuery: any;
 export class AppComponent
 {
 	listings: Listing[] = [];
+
+	news: Article[] = [];
 
 	searched_listings: Listing[] = [];
 
@@ -73,6 +78,7 @@ export class AppComponent
 		private listingsService: ListingsService,
 		private detailService: DetailService,
 		private settingsService: SettingsService,
+		private newsService: NewsService,
 		private titleService: Title,
 		private currencyPipe: CurrencyPipe,
 		private electronService: ElectronService
@@ -80,6 +86,7 @@ export class AppComponent
 	{
 		this.settings = this.settingsService.getSettings();
 		this.loadData();
+		this.loadNews();
 		this.loadFavorites();
 		this.startTooltip();
 
@@ -104,9 +111,11 @@ export class AppComponent
 		if(this.electronService.isElectronApp)
 		{
 			this.electronService.shell.openExternal(url);
+
+			return false;
 		}
 
-		return false;
+		window.open(url);
 	}
 
 	ngOnDestroy()
@@ -156,6 +165,15 @@ export class AppComponent
 				this.conversion_rates = data[2];
 
 				this.initListings();
+			}
+		);
+	}
+
+	loadNews()
+	{
+		this.newsService.loadNews().subscribe(
+			(data: any[]) => {
+				this.news = data;
 			}
 		);
 	}
