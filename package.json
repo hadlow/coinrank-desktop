@@ -33,6 +33,7 @@
     "d3": "^4.11.0",
     "jquery": "^3.2.1",
     "ngx-electron": "^1.0.4",
+    "ngx-perfect-scrollbar": "^5.3.1",
     "popper.js": "^1.12.5",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"

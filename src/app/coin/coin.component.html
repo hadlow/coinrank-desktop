@@ -1,0 +1,112 @@
+<div class="content" [ngClass]="{'loading': listing_loading}">
+	<div class="loading"><img src="./assets/images/logo-dark.png" height="42" /></div>
+	
+	<div class="container-fluid">
+		<div class="options">
+			<div class="row">
+				<div class="col-sm-12" style="margin-top:-2px">
+					<div class="btn-group btn-group-sm" role="group">
+						<button (click)="openWebsite(detailed?.info.website)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Visit website"><i class="fa fa-external-link"></i></button>
+						<button *ngIf="detailed?.info.twitter != ''" (click)="openWebsite('https://www.twitter.com/' + detailed?.info.twitter)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></button>
+						<button *ngIf="detailed?.info.reddit != ''" (click)="openWebsite('https://www.reddit.com/r/' + detailed?.info.reddit)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Reddit"><i class="fa fa-reddit"></i></button>
+						<button *ngIf="detailed?.info.github != ''" (click)="openWebsite('https://www.github.com/' + detailed?.info.github)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Github"><i class="fa fa-github"></i></button>
+						<button *ngIf="detailed?.info.explorer != ''" (click)="openWebsite(detailed?.info.explorer)" class="btn btn-primary" target="_blank" data-toggle="tooltip" data-placement="bottom" title="Explorer"><i class="fa fa-search"></i></button>
+					</div>
+
+					<div class="back" (click)="onBackClick()"><i class="fa fa-times"></i></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="heading">
+			<div class="row no-gutters">
+				<div class="col-sm-6">
+					<img *ngIf="viewing" src="https://s3-us-west-1.amazonaws.com/coinrank/icons/{{ viewing?.getSymbol() }}.png" class="pull-left mr-2 mt-1" />
+					
+					<h2 class="mt-1 mb-0" style="line-height:18px">{{ viewing?.getName() }}</h2>
+					<h4 class="mt-0 mb-0"><strong>{{ viewing?.getSymbol() }}</strong></h4>
+					<p class="mt-2 mb-0 text-uppercase small">Circulation: <strong>{{ viewing?.getAvailableSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</strong> / {{ (viewing?.getAvailableSupply() * viewing?.getPrice()) | currency:settings[1]:'symbol':'1.0-0' }}</p>
+					<p *ngIf="viewing?.getTotalSupply() != 0" class="mt-0 mb-0 text-uppercase small">Max: <strong>{{ viewing?.getTotalSupply() | number:'1.0-0' }} {{ viewing?.getSymbol() }}</strong> / {{ (viewing?.getTotalSupply() * viewing?.getPrice()) | currency:settings[1]:'symbol':'1.0-0' }}</p>
+					<p class="mt-0 mb-0 text-uppercase small">Volume (24h): <strong>{{ (viewing?.getVolume() / viewing?.getPrice()) | number:'1.0-0' }} {{ viewing?.getSymbol() }}</strong> / {{ viewing?.getVolume() | currency:settings[1]:'symbol':'1.0-0' }}</p>
+					<p *ngIf="detailed?.info.ico_status == 'Ongoing' || detailed?.info.ico_status == 'Finished'" class="mt-0 mb-0 text-uppercase"><span class="badge badge-primary">ICO {{ detailed?.info.ico_status }}</span></p>
+				</div>
+
+				<div class="col-sm-6 text-right">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="pull-right text-right">
+								<h1 class="mt-0 mb-0">{{ viewing?.getPrice() | currency:settings[1]:'symbol':'1.2-5' }}</h1>
+							</div>
+
+							<div class="pull-right text-right mr-2">
+								<p class="mt-0 mb-0 badge badge-primary">{{ viewing?.getPriceUsd() * conversion_rates['BTC'] | number:'1.1-8' }} BTC</p>
+								<p class="mt-0 mb-0 badge badge-primary d-block">{{ viewing?.getPriceUsd() * conversion_rates['ETH'] | number:'1.1-6' }} ETH</p>
+							</div>
+						</div>
+					</div>
+
+					<p class="mt-0 mb-0 text-{{ viewing?.getColor('1h') }}"><span class="mt-0 mb-0 badge badge-light">1H</span> {{ viewing?.getPercentChange1H() }}%<span> ({{ viewing?.getPriceChange1H() | currency:settings[1]:'symbol':'1.2-2' }})</span></p>
+					<p class="mt-0 mb-0 text-{{ viewing?.getColor('24h') }}"><span class="mt-0 mb-0 badge badge-light">24H</span> {{ viewing?.getPercentChange24H() }}%<span> ({{ viewing?.getPriceChange24H() | currency:settings[1]:'symbol':'1.2-2' }})</span></p>
+					<p class="mt-0 mb-0 text-{{ viewing?.getColor('7d') }}"><span class="mt-0 mb-0 badge badge-light">7D</span> {{ viewing?.getPercentChange7D() }}%<span> ({{ viewing?.getPriceChange7D() | currency:settings[1]:'symbol':'1.2-2' }})</span></p>
+				</div>
+			</div>
+		</div>
+
+		<div class="chart mt-5">
+			<div class="row">
+				<div id="chartdiv" [style.width.%]="100" [style.height.px]="400"></div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12 col-md-8 mt-3 ml-auto mr-auto">
+					<ul class="nav nav-pills nav-fill">
+						<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1day'}" (click)="onChartClick('1day')">1 Day</span></li>
+
+						<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1month'}" (click)="onChartClick('1month')">1 Month</span></li>
+
+						<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '3month'}" (click)="onChartClick('3month')">3 Months</span></li>
+
+						<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == '1year'}" (click)="onChartClick('1year')">1 Year</span></li>
+
+						<li class="nav-item"><span class="nav-link" [ngClass]="{'active': chart_time == 'all'}" (click)="onChartClick('all')">All</span></li>
+					</ul>
+				</div>
+
+				<div class="col-sm-12 col-md-8 mt-3 ml-auto mr-auto text-center">
+					<div class="btn-group btn-group-sm" role="group">
+						<button type="button" class="btn btn-dark" [ngClass]="{'active': !chart_logarithmic}" (click)="onLogarithmicClick(false)">Linear</button>
+						<button type="button" class="btn btn-dark" [ngClass]="{'active': chart_logarithmic}" (click)="onLogarithmicClick(true)">Logarithmic</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="markets mt-5">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>Global markets</h2>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="text-left">Currency</th>
+								<th class="text-left">Volume</th>
+								<th class="text-left">{{ settings[1] }} Equivalent</th>
+								<th class="text-left">Global share</th>
+							</tr>
+						</thead>
+	
+						<tbody>
+							<tr *ngFor="let market of detailed?.markets">
+								<td>{{ market[0] }}</td>
+								<td>{{ market[1] | number:'1.0-0' }} {{ viewing?.getSymbol() }}</td>
+								<td>{{ (market[1] * viewing?.getPrice()) | currency:settings[1]:'symbol':'1.0-0' }}</td>
+								<td>{{ ((market[1] / total_volume) * 100) | number:'1.2-2' }}%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
